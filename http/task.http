@@ -2,7 +2,7 @@
 POST  http://localhost:8765/planner-todo/task/all
 Content-Type: application/json
 
-100
+9
 
 ###
 POST  http://localhost:8765/planner-todo/task/add
@@ -13,7 +13,7 @@ Content-Type: application/json
   "taskDate": "2024-02-25T00:00:00",
   "completed": false,
   "color": "Yellow",
-  "userId": 100
+  "userId": 9
 }
 
 ###

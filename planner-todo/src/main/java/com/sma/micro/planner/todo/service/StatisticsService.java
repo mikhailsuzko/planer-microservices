@@ -13,4 +13,8 @@ public class StatisticsService {
     public Statistics findStatistics(Long userId) {
         return repository.findByUserId(userId).orElseThrow();
     }
+
+    public Statistics add(Statistics statistics) {
+        return repository.save(statistics);
+    }
 }

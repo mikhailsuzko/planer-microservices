@@ -3,8 +3,10 @@ package com.sma.micro.planner.plannerusers.controller;
 import com.sma.micro.planner.plannerentity.entity.User;
 import com.sma.micro.planner.plannerusers.search.UserSearchValue;
 import com.sma.micro.planner.plannerusers.service.UserService;
+import com.sma.micro.planner.plannerutils.rest.webclient.UserWebClientBuilder;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,12 +21,14 @@ import java.util.NoSuchElementException;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.OK;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
     public static final String ID_COLUMN = "id";
     private final UserService userService;
+    private final UserWebClientBuilder userWebClientBuilder;
 
     @PostMapping("/add")
     public ResponseEntity<User> add(@RequestBody User user) {
@@ -40,7 +44,17 @@ public class UserController {
         if (StringUtils.isBlank(user.getUsername())) {
             return new ResponseEntity("Missed param: username ", NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(userService.add(user));
+        user = userService.add(user);
+        if (user != null) {
+            userWebClientBuilder.initUserData(user.getId()).subscribe(result -> {
+                if (result) {
+                    log.info("user populated");
+                } else {
+                    log.info("user not populated");
+                }
+            });
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/update")

@@ -52,4 +52,7 @@ public class TaskService {
                 dateFrom, dateTo, userId, pageable);
     }
 
+    public void addAll(List<Task> tasks) {
+        repository.saveAll(tasks);
+    }
 }

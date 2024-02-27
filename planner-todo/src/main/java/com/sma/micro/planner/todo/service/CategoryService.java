@@ -41,4 +41,8 @@ public class CategoryService {
     public List<Category> findByTitle(String title, Long userId) {
         return repository.findByTitle(Utils.prepareParam(title), userId);
     }
+
+    public void addAll(List<Category> categories) {
+        repository.saveAll(categories);
+    }
 }

@@ -41,4 +41,8 @@ public class PriorityService {
     public List<Priority> findByTitle(String title, Long userId) {
         return repository.findByTitle(Utils.prepareParam(title), userId);
     }
+
+    public void addAll(List<Priority> priorities) {
+        repository.saveAll(priorities);
+    }
 }

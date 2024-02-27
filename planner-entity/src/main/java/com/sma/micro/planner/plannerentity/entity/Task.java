@@ -1,10 +1,7 @@
 package com.sma.micro.planner.plannerentity.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.type.NumericBooleanConverter;
 
 import java.time.LocalDateTime;
@@ -13,6 +10,9 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "task", schema = "todo")
 public class Task {
@@ -26,7 +26,7 @@ public class Task {
 
     @Column(name = "completed")
     @Convert(converter = NumericBooleanConverter.class)
-    private Boolean completed;
+    private Boolean completed = false;
 
     @Column(name = "task_date")
     private LocalDateTime taskDate;
