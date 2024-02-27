@@ -1,0 +1,42 @@
+###
+POST http://localhost:8765/planner-todo/category/all
+Content-Type: application/json
+
+100
+
+###
+POST http://localhost:8765/planner-todo/category/add
+Content-Type: application/json
+
+{
+  "title": "New category",
+  "userId": 100
+}
+
+###
+PUT  http://localhost:8765/planner-todo/category/update
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Old category",
+  "userId": 100
+}
+
+###
+DELETE  http://localhost:8765/planner-todo/category/delete/2
+
+###
+POST  http://localhost:8765/planner-todo/category/search
+Content-Type: application/json
+
+{
+  "title": "a",
+  "userId": 100
+}
+
+###
+POST  http://localhost:8765/planner-todo/category/id
+Content-Type: application/json
+
+1

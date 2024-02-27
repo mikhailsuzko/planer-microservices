@@ -1,0 +1,44 @@
+###
+POST  http://localhost:8765/planner-todo/priority/all
+Content-Type: application/json
+
+100
+
+###
+POST  http://localhost:8765/planner-todo/priority/add
+Content-Type: application/json
+
+{
+  "title": "New priority",
+  "color": "Yellow",
+  "userId": 100
+}
+
+###
+PUT  http://localhost:8765/planner-todo/priority/update
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Old priority",
+  "color": "Yellow",
+  "userId": 100
+}
+
+###
+DELETE  http://localhost:8765/planner-todo/priority/delete/2
+
+###
+POST  http://localhost:8765/planner-todo/priority/search
+Content-Type: application/json
+
+{
+  "title": "l",
+  "userId": 100
+}
+
+###
+POST  http://localhost:8765/planner-todo/priority/id
+Content-Type: application/json
+
+1

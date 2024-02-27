@@ -1,0 +1,51 @@
+###
+POST  http://localhost:8765/planner-todo/task/all
+Content-Type: application/json
+
+100
+
+###
+POST  http://localhost:8765/planner-todo/task/add
+Content-Type: application/json
+
+{
+  "title": "New task",
+  "taskDate": "2024-02-25T00:00:00",
+  "completed": false,
+  "color": "Yellow",
+  "userId": 100
+}
+
+###
+PUT  http://localhost:8765/planner-todo/task/update
+Content-Type: application/json
+
+{
+  "id": 2,
+  "title": "Old priority",
+  "taskDate": "2024-02-24T00:00:00",
+  "completed": true,
+  "userId": 100
+}
+
+###
+DELETE  http://localhost:8765/planner-todo/task/delete/3
+
+###
+POST  http://localhost:8765/planner-todo/task/search
+Content-Type: application/json
+
+{
+  "title": "l",
+  "userId": 100,
+  "sortColumn": "title",
+  "sortDirection": "desc",
+  "pageNumber": 0,
+  "pageSize": 2
+}
+
+###
+POST  http://localhost:8765/planner-todo/task/id
+Content-Type: application/json
+
+15082
