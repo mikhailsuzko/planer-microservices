@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Category;
-import com.sma.micro.planner.plannerutils.rest.UserRestBuilder;
+import com.sma.micro.planner.plannerutils.rest.webclient.UserWebClientBuilder;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.CategoryService;
 import io.micrometer.common.util.StringUtils;
@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    private final UserRestBuilder userRestBuilder;
+    private final UserWebClientBuilder userWebClientBuilder;
 
     @PostMapping("/all")
     public List<Category> findAll(@RequestBody Long userId) {
@@ -34,7 +34,7 @@ public class CategoryController {
         if (StringUtils.isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (userRestBuilder.userExist(category.getUserId())) {
+        if (userWebClientBuilder.userExist(category.getUserId())) {
             return ResponseEntity.ok(categoryService.add(category));
         }
         return new ResponseEntity("user id=" + category.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
@@ -49,7 +49,7 @@ public class CategoryController {
         if (StringUtils.isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (userRestBuilder.userExist(category.getUserId())) {
+        if (userWebClientBuilder.userExist(category.getUserId())) {
             categoryService.update(category);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -64,7 +64,7 @@ public class CategoryController {
 
     @PostMapping("/search")
     public ResponseEntity<List<Category>> search(@RequestBody SearchValues params) {
-        if (params.userId() != null && userRestBuilder.userExist(params.userId())) {
+        if (params.userId() != null && userWebClientBuilder.userExist(params.userId())) {
             var categories = categoryService.findByTitle(params.title(), params.userId());
             return ResponseEntity.ok(categories);
         }

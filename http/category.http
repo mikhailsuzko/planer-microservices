@@ -9,8 +9,8 @@ POST http://localhost:8765/planner-todo/category/add
 Content-Type: application/json
 
 {
-  "title": "New category",
-  "userId": 100
+  "title": "New category 3",
+  "userId": 9
 }
 
 ###

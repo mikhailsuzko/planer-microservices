@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Task;
-import com.sma.micro.planner.plannerutils.rest.UserRestBuilder;
+import com.sma.micro.planner.plannerutils.rest.rest_template.UserRestBuilder;
 import com.sma.micro.planner.todo.search.TaskSearchValues;
 import com.sma.micro.planner.todo.service.TaskService;
 import io.micrometer.common.util.StringUtils;

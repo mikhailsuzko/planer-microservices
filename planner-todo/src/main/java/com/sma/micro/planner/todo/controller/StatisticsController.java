@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Statistics;
-import com.sma.micro.planner.plannerutils.rest.UserRestBuilder;
+import com.sma.micro.planner.plannerutils.rest.rest_template.UserRestBuilder;
 import com.sma.micro.planner.todo.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
