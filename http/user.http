@@ -1,0 +1,56 @@
+### Add new user
+POST http://localhost:8765/planner-users/user/add
+Content-Type: application/json
+
+{
+  "email": "email4@gmail.com",
+  "username": "email4",
+  "password": "password"
+}
+
+### Update user
+POST http://localhost:8765/planner-users/user/update
+Content-Type: application/json
+
+{
+  "id": 1,
+  "email": "email1_1@gmail.com",
+  "username": "email1_1",
+  "password": "password"
+}
+
+### Delete user by id
+POST http://localhost:8765/planner-users/user/deleteById
+Content-Type: application/json
+
+1
+
+### Delete user by email
+POST http://localhost:8765/planner-users/user/deleteByEmail
+Content-Type: application/json
+
+email3@gmail.com
+
+### Find user by id
+POST http://localhost:8765/planner-users/user/id
+Content-Type: application/json
+
+9
+
+### Find user by email
+POST http://localhost:8765/planner-users/user/email
+Content-Type: application/json
+
+email1@gmail.com
+
+###
+POST http://localhost:8765/planner-users/user/search
+Content-Type: application/json
+
+{
+  "username": "email",
+  "pageNumber": 0,
+  "pageSize": 2,
+  "sortColumn": "username",
+  "sortDirection": "desc"
+}
