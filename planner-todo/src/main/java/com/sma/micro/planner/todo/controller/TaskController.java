@@ -1,6 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Task;
+import com.sma.micro.planner.plannerutils.rest.UserRestBuilder;
 import com.sma.micro.planner.todo.search.TaskSearchValues;
 import com.sma.micro.planner.todo.service.TaskService;
 import io.micrometer.common.util.StringUtils;
@@ -21,10 +22,15 @@ import java.util.NoSuchElementException;
 public class TaskController {
     private static final String ID_COLUMN = "id";
     private final TaskService taskService;
+    private final UserRestBuilder userRestBuilder;
 
     @PostMapping("/all")
-    public List<Task> findAll(@RequestBody Long userId) {
-        return taskService.findAll(userId);
+    public ResponseEntity<List<Task>> findAll(@RequestBody Long userId) {
+        if (userRestBuilder.userExist(userId)) {
+            return ResponseEntity.ok(taskService.findAll(userId));
+        }
+        return new ResponseEntity("user id=" + userId + " not found", HttpStatus.NOT_ACCEPTABLE);
+
     }
 
     @PostMapping("/add")
@@ -36,7 +42,11 @@ public class TaskController {
         if (StringUtils.isBlank(task.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(taskService.add(task));
+        if (userRestBuilder.userExist(task.getUserId())) {
+            return ResponseEntity.ok(taskService.add(task));
+        }
+        return new ResponseEntity("user id=" + task.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
+
     }
 
     @PutMapping("/update")
@@ -47,8 +57,11 @@ public class TaskController {
         if (StringUtils.isBlank(task.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        taskService.update(task);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (userRestBuilder.userExist(task.getUserId())) {
+            taskService.update(task);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity("user id=" + task.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -63,20 +76,23 @@ public class TaskController {
         if (params.userId() == null) {
             return new ResponseEntity("Missed param userId", HttpStatus.NOT_ACCEPTABLE);
         }
+        if (userRestBuilder.userExist(params.userId())) {
 
-        var dateFrom = params.dateFrom() == null ? null : params.dateFrom().atStartOfDay();
-        var dateTo = params.dateTo() == null ? null : params.dateTo().atTime(23, 59, 59, 999_999_999);
-        var direction = StringUtils.isBlank(params.sortDirection())
-                || params.sortDirection().trim().equalsIgnoreCase("ask")
-                ? Sort.Direction.ASC : Sort.Direction.DESC;
-        var sort = Sort.by(direction, params.sortColumn(), ID_COLUMN);
-        PageRequest request = PageRequest.of(params.pageNumber(), params.pageSize(), sort);
+            var dateFrom = params.dateFrom() == null ? null : params.dateFrom().atStartOfDay();
+            var dateTo = params.dateTo() == null ? null : params.dateTo().atTime(23, 59, 59, 999_999_999);
+            var direction = StringUtils.isBlank(params.sortDirection())
+                    || params.sortDirection().trim().equalsIgnoreCase("ask")
+                    ? Sort.Direction.ASC : Sort.Direction.DESC;
+            var sort = Sort.by(direction, params.sortColumn(), ID_COLUMN);
+            PageRequest request = PageRequest.of(params.pageNumber(), params.pageSize(), sort);
 
-        var tasks = taskService.findByParams(params.title(), params.completed(),
-                params.priorityId(), params.categoryId(),
-                dateFrom, dateTo,
-                params.userId(), request);
-        return ResponseEntity.ok(tasks);
+            var tasks = taskService.findByParams(params.title(), params.completed(),
+                    params.priorityId(), params.categoryId(),
+                    dateFrom, dateTo,
+                    params.userId(), request);
+            return ResponseEntity.ok(tasks);
+        }
+        return new ResponseEntity("user id=" + params.userId() + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/id")

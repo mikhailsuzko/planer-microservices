@@ -1,6 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Priority;
+import com.sma.micro.planner.plannerutils.rest.UserRestBuilder;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.PriorityService;
 import io.micrometer.common.util.StringUtils;
@@ -17,10 +18,14 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class PriorityController {
     private final PriorityService priorityService;
+    private final UserRestBuilder userRestBuilder;
 
     @PostMapping("/all")
-    public List<Priority> findAll(@RequestBody Long userId) {
-        return priorityService.findAll(userId);
+    public ResponseEntity<List<Priority>> findAll(@RequestBody Long userId) {
+        if (userRestBuilder.userExist(userId)) {
+            return ResponseEntity.ok(priorityService.findAll(userId));
+        }
+        return new ResponseEntity("user id=" + userId + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/add")
@@ -32,7 +37,10 @@ public class PriorityController {
         if (StringUtils.isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(priorityService.add(category));
+        if (userRestBuilder.userExist(category.getUserId())) {
+            return ResponseEntity.ok(priorityService.add(category));
+        }
+        return new ResponseEntity("user id=" + category.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PutMapping("/update")
@@ -43,8 +51,11 @@ public class PriorityController {
         if (StringUtils.isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        priorityService.update(category);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (userRestBuilder.userExist(category.getUserId())) {
+            priorityService.update(category);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity("user id=" + category.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -55,9 +66,11 @@ public class PriorityController {
 
     @PostMapping("/search")
     public ResponseEntity<List<Priority>> search(@RequestBody SearchValues params) {
-
-        var categories = priorityService.findByTitle(params.title(), params.userId());
-        return ResponseEntity.ok(categories);
+        if (userRestBuilder.userExist(params.userId())) {
+            var categories = priorityService.findByTitle(params.title(), params.userId());
+            return ResponseEntity.ok(categories);
+        }
+        return new ResponseEntity("user id=" + params.userId() + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/id")

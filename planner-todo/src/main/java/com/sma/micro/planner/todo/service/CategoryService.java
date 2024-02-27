@@ -2,11 +2,11 @@ package com.sma.micro.planner.todo.service;
 
 
 import com.sma.micro.planner.plannerentity.entity.Category;
+import com.sma.micro.planner.plannerutils.util.Utils;
 import com.sma.micro.planner.todo.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +39,6 @@ public class CategoryService {
     }
 
     public List<Category> findByTitle(String title, Long userId) {
-        title = StringUtils.isBlank(title) ? null : "%" + title.toLowerCase() + "%";
-        return repository.findByTitle(title, userId);
+        return repository.findByTitle(Utils.prepareParam(title), userId);
     }
 }

@@ -1,6 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Category;
+import com.sma.micro.planner.plannerutils.rest.UserRestBuilder;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.CategoryService;
 import io.micrometer.common.util.StringUtils;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    private final UserRestBuilder userRestBuilder;
 
     @PostMapping("/all")
     public List<Category> findAll(@RequestBody Long userId) {
@@ -32,7 +34,11 @@ public class CategoryController {
         if (StringUtils.isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(categoryService.add(category));
+        if (userRestBuilder.userExist(category.getUserId())) {
+            return ResponseEntity.ok(categoryService.add(category));
+        }
+        return new ResponseEntity("user id=" + category.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
+
     }
 
     @PutMapping("/update")
@@ -43,8 +49,11 @@ public class CategoryController {
         if (StringUtils.isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
         }
-        categoryService.update(category);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (userRestBuilder.userExist(category.getUserId())) {
+            categoryService.update(category);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity("user id=" + category.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -55,9 +64,12 @@ public class CategoryController {
 
     @PostMapping("/search")
     public ResponseEntity<List<Category>> search(@RequestBody SearchValues params) {
+        if (params.userId() != null && userRestBuilder.userExist(params.userId())) {
+            var categories = categoryService.findByTitle(params.title(), params.userId());
+            return ResponseEntity.ok(categories);
+        }
+        return new ResponseEntity("user id=" + params.userId() + " not found", HttpStatus.NOT_ACCEPTABLE);
 
-        var categories = categoryService.findByTitle(params.title(), params.userId());
-        return ResponseEntity.ok(categories);
     }
 
     @PostMapping("/id")
