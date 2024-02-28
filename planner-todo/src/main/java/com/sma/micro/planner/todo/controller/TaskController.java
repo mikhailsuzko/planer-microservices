@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.sma.micro.planner.plannerutils.util.Utils.userIdNotFound;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
+
 @RestController
 @RequestMapping("task")
 @RequiredArgsConstructor
@@ -29,7 +32,7 @@ public class TaskController {
         if (userRestBuilder.userExist(userId)) {
             return ResponseEntity.ok(taskService.findAll(userId));
         }
-        return new ResponseEntity("user id=" + userId + " not found", HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
 
     }
 
@@ -37,31 +40,31 @@ public class TaskController {
     public ResponseEntity<Task> add(@RequestBody Task task) {
 
         if (task.getId() != null) {
-            return new ResponseEntity("Redundant param: id must be null", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Redundant param: id must be null", NOT_ACCEPTABLE);
         }
         if (StringUtils.isBlank(task.getTitle())) {
-            return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
         if (userRestBuilder.userExist(task.getUserId())) {
             return ResponseEntity.ok(taskService.add(task));
         }
-        return new ResponseEntity("user id=" + task.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(task.getUserId()), NOT_ACCEPTABLE);
 
     }
 
     @PutMapping("/update")
     public ResponseEntity<Void> update(@RequestBody Task task) {
         if (task.getId() == null || task.getId() == 0) {
-            return new ResponseEntity("Missed param id", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Missed param id", NOT_ACCEPTABLE);
         }
         if (StringUtils.isBlank(task.getTitle())) {
-            return new ResponseEntity("Missed param title", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
         if (userRestBuilder.userExist(task.getUserId())) {
             taskService.update(task);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity("user id=" + task.getUserId() + " not found", HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(task.getUserId()), NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -74,7 +77,7 @@ public class TaskController {
     public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues params) {
 
         if (params.userId() == null) {
-            return new ResponseEntity("Missed param userId", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Missed param userId", NOT_ACCEPTABLE);
         }
         if (userRestBuilder.userExist(params.userId())) {
 
@@ -92,7 +95,7 @@ public class TaskController {
                     params.userId(), request);
             return ResponseEntity.ok(tasks);
         }
-        return new ResponseEntity("user id=" + params.userId() + " not found", HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(params.userId()), NOT_ACCEPTABLE);
     }
 
     @PostMapping("/id")
@@ -100,7 +103,7 @@ public class TaskController {
         try {
             return ResponseEntity.ok(taskService.findById(id));
         } catch (NoSuchElementException ex) {
-            return new ResponseEntity("Element with id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Element with id=" + id + " not found", NOT_ACCEPTABLE);
         }
     }
 

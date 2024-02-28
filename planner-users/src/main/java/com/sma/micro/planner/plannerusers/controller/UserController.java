@@ -91,7 +91,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.findById(id));
         } catch (NoSuchElementException ex) {
-            return new ResponseEntity("id " + id + " not found", NOT_ACCEPTABLE);
+            return new ResponseEntity("user id " + id + " not found", NOT_ACCEPTABLE);
         }
     }
 
