@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "planner-users")
+@FeignClient(name = "planner-users", fallback = UserFeignClientFallback.class)
 public interface UserFeignClient {
 
     @PostMapping("/user/id")

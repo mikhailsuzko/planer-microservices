@@ -87,6 +87,6 @@ public class PriorityController {
     }
 
     private boolean userExist(Long userId) {
-        return userFeignClient.findUserById(userId) != null;
+        return userFeignClient.findUserById(userId).getBody() != null;
     }
 }
