@@ -1,6 +1,7 @@
 package com.sma.micro.planner.plannerusers.controller;
 
 import com.sma.micro.planner.plannerentity.entity.User;
+import com.sma.micro.planner.plannerusers.mq.MessageProducer;
 import com.sma.micro.planner.plannerusers.search.UserSearchValue;
 import com.sma.micro.planner.plannerusers.service.UserService;
 import com.sma.micro.planner.plannerutils.rest.webclient.UserWebClientBuilder;
@@ -29,6 +30,7 @@ public class UserController {
     public static final String ID_COLUMN = "id";
     private final UserService userService;
     private final UserWebClientBuilder userWebClientBuilder;
+    private final MessageProducer messageProducer;
 
     @PostMapping("/add")
     public ResponseEntity<User> add(@RequestBody User user) {
@@ -46,13 +48,7 @@ public class UserController {
         }
         user = userService.add(user);
         if (user != null) {
-            userWebClientBuilder.initUserData(user.getId()).subscribe(result -> {
-                if (result) {
-                    log.info("user populated");
-                } else {
-                    log.info("user not populated");
-                }
-            });
+            messageProducer.sendNewUserMessage(user.getId());
         }
         return ResponseEntity.ok(user);
     }

@@ -27,6 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation "org.springframework.cloud:spring-cloud-starter-feign:${feignVersion}"
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit'
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'com.sma.micro.planner:planner-entity'
 	implementation 'com.sma.micro.planner:planner-utils'

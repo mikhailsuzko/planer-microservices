@@ -3,8 +3,8 @@ POST http://localhost:8765/planner-users/user/add
 Content-Type: application/json
 
 {
-  "email": "email7@gmail.com",
-  "username": "email7",
+  "email": "email12@gmail.com",
+  "username": "email12",
   "password": "password"
 }
 
