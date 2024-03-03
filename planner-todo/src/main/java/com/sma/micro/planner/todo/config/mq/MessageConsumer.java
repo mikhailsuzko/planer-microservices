@@ -14,7 +14,7 @@ public class MessageConsumer {
     private final InitDataService initDataService;
 
     @Bean
-    public Consumer<Message<Long>> newUserConsume() {
+    public Consumer<Message<String>> newUserConsume() {
         return message -> initDataService.init(message.getPayload());
     }
 

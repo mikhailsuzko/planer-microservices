@@ -22,7 +22,7 @@ public class CategoryService {
         return repository.findById(id).orElseThrow();
     }
 
-    public List<Category> findAll(Long userId) {
+    public List<Category> findAll(String userId) {
         return repository.findByUserIdOrderByTitle(userId);
     }
 
@@ -38,7 +38,7 @@ public class CategoryService {
         repository.deleteById(id);
     }
 
-    public List<Category> findByTitle(String title, Long userId) {
+    public List<Category> findByTitle(String title, String userId) {
         return repository.findByTitle(Utils.prepareParam(title), userId);
     }
 

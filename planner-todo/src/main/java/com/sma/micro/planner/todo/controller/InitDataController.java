@@ -15,7 +15,7 @@ public class InitDataController {
     private final InitDataService initDataService;
 
     @PostMapping("/init")
-    public ResponseEntity<Boolean> init(@RequestBody Long userId) {
+    public ResponseEntity<Boolean> init(@RequestBody String userId) {
         return ResponseEntity.ok(initDataService.init(userId));
     }
 

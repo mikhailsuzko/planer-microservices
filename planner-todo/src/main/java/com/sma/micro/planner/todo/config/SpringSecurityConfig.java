@@ -20,7 +20,7 @@ public class SpringSecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(jwtConverter);
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/test/login").permitAll()
+                .requestMatchers("/category/*", "/priority/*", "/task/*").hasRole("user")
                 .anyRequest().authenticated()
         ).oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(converter))
@@ -29,8 +29,4 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public JwtConverter jwtConverter() {
-        return new JwtConverter();
-    }
 }

@@ -19,7 +19,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             "and (:title is null " +
             "or lower(c.title) like :title)" +
             "order by c.title asc ")
-    List<Task> findByTitle(String title, Long userId);
+    List<Task> findByTitle(String title, String userId);
 
     @Query("SELECT t " +
             "from Task t " +
@@ -38,8 +38,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
                             Long categoryId,
                             LocalDateTime dateFrom,
                             LocalDateTime dateTo,
-                            Long userId,
+                            String userId,
                             Pageable pageable);
 
-    List<Task> findByUserIdOrderByTaskDateDescTitleAsc(Long userId);
+    List<Task> findByUserIdOrderByTaskDateDescTitleAsc(String userId);
 }

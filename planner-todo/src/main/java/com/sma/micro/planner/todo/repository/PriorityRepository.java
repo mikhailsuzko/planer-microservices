@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
 
-    List<Priority> findByUserIdOrderByIdAsc(Long userId);
+    List<Priority> findByUserIdOrderByIdAsc(String userId);
 
     @Query("SELECT p " +
             "from Priority p " +
@@ -18,5 +18,5 @@ public interface PriorityRepository extends JpaRepository<Priority, Long> {
             "and (:title is null " +
             "or lower(p.title) like :title)" +
             "order by p.title asc ")
-    List<Priority> findByTitle(String title, Long userId);
+    List<Priority> findByTitle(String title, String userId);
 }

@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface StatisticsRepository extends CrudRepository<Statistics, Long> {
 
-    Optional<Statistics> findByUserId(Long userId);
+    Optional<Statistics> findByUserId(String userId);
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class StatisticsService {
     private final StatisticsRepository repository;
 
-    public Statistics findStatistics(Long userId) {
+    public Statistics findStatistics(String userId) {
         return repository.findByUserId(userId).orElseThrow();
     }
 

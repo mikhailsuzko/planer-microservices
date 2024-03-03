@@ -25,7 +25,7 @@ public class TaskService {
         return repository.findById(id).orElseThrow();
     }
 
-    public List<Task> findAll(Long userId) {
+    public List<Task> findAll(String userId) {
         return repository.findByUserIdOrderByTaskDateDescTitleAsc(userId);
     }
 
@@ -47,7 +47,7 @@ public class TaskService {
                                    Long categoryId,
                                    LocalDateTime dateFrom,
                                    LocalDateTime dateTo,
-                                   Long userId, Pageable pageable) {
+                                   String userId, Pageable pageable) {
         return repository.findByParams(Utils.prepareParam(title), completed, priorityId, categoryId,
                 dateFrom, dateTo, userId, pageable);
     }

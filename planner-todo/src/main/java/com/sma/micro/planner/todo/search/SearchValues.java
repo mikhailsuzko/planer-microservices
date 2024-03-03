@@ -1,5 +1,5 @@
 package com.sma.micro.planner.todo.search;
 
-public record SearchValues(String title, Long userId) {
+public record SearchValues(String title) {
 
 }

@@ -18,7 +18,7 @@ public class InitDataService {
     private final CategoryService categoryService;
     private final StatisticsService statisticsService;
 
-    public boolean init(Long userId) {
+    public boolean init(String userId) {
         var statistics = Statistics.builder().userId(userId).completed(0L).uncompleted(0L).build();
         statisticsService.add(statistics);
 

@@ -1,12 +1,14 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Priority;
-import com.sma.micro.planner.todo.feign.UserFeignClient;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.PriorityService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,45 +23,48 @@ import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 @RequiredArgsConstructor
 public class PriorityController {
     private final PriorityService priorityService;
-    private final UserFeignClient userFeignClient;
+//    private final UserFeignClient userFeignClient;
 
     @PostMapping("/all")
-    public ResponseEntity<List<Priority>> findAll(@RequestBody Long userId) {
-        if (userExist(userId)) {
+    public ResponseEntity<List<Priority>> findAll(@AuthenticationPrincipal Jwt jwt) {
+        var userId = jwt.getSubject();
+        if (!Strings.isBlank(userId)) {
+//        if (userExist(userId)) {
             return ResponseEntity.ok(priorityService.findAll(userId));
         }
         return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Priority> add(@RequestBody Priority category) {
 
-        if (category.getId() != null) {
+    @PostMapping("/add")
+    public ResponseEntity<Priority> add(@RequestBody Priority priority, @AuthenticationPrincipal Jwt jwt) {
+        priority.setUserId(jwt.getSubject());
+        if (priority.getId() != null) {
             return new ResponseEntity("Redundant param: id must be null", NOT_ACCEPTABLE);
         }
-        if (isBlank(category.getTitle())) {
+        if (isBlank(priority.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-        if (userExist(category.getUserId())) {
-            return ResponseEntity.ok(priorityService.add(category));
+        if (userExist(priority.getUserId())) {
+            return ResponseEntity.ok(priorityService.add(priority));
         }
-        return new ResponseEntity(userIdNotFound(category.getUserId()), NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(priority.getUserId()), NOT_ACCEPTABLE);
     }
 
-
     @PutMapping("/update")
-    public ResponseEntity<Void> update(@RequestBody Priority category) {
-        if (category.getId() == null || category.getId() == 0) {
+    public ResponseEntity<Void> update(@RequestBody Priority priority, @AuthenticationPrincipal Jwt jwt) {
+        priority.setUserId(jwt.getSubject());
+        if (priority.getId() == null || priority.getId() == 0) {
             return new ResponseEntity("Missed param id", NOT_ACCEPTABLE);
         }
-        if (isBlank(category.getTitle())) {
+        if (isBlank(priority.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-        if (userExist(category.getUserId())) {
-            priorityService.update(category);
+        if (userExist(priority.getUserId())) {
+            priorityService.update(priority);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity(userIdNotFound(category.getUserId()), NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(priority.getUserId()), NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -69,12 +74,13 @@ public class PriorityController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Priority>> search(@RequestBody SearchValues params) {
-        if (userExist(params.userId())) {
-            var categories = priorityService.findByTitle(params.title(), params.userId());
+    public ResponseEntity<List<Priority>> search(@RequestBody SearchValues params, @AuthenticationPrincipal Jwt jwt) {
+        var userId = jwt.getSubject();
+        if (!isBlank(userId)) {
+            var categories = priorityService.findByTitle(params.title(), userId);
             return ResponseEntity.ok(categories);
         }
-        return new ResponseEntity(userIdNotFound(params.userId()), NOT_ACCEPTABLE);
+        return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
     }
 
     @PostMapping("/id")
@@ -86,7 +92,7 @@ public class PriorityController {
         }
     }
 
-    private boolean userExist(Long userId) {
-        return userFeignClient.findUserById(userId).getBody() != null;
+    private boolean userExist(String userId) {
+        return true; //userFeignClient.findUserById(userId).getBody() != null;
     }
 }

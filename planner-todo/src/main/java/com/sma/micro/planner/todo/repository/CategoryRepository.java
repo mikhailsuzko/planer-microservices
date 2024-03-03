@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    List<Category> findByUserIdOrderByTitle(Long userId);
+    List<Category> findByUserIdOrderByTitle(String userId);
 
     @Query("SELECT c " +
             "from Category c " +
@@ -18,5 +18,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "and (:title is null " +
             "or lower(c.title) like :title)" +
             "order by c.title asc ")
-    List<Category> findByTitle(String title, Long userId);
+    List<Category> findByTitle(String title, String userId);
 }

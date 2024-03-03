@@ -7,7 +7,6 @@ public record TaskSearchValues(
         Boolean completed,
         Long priorityId,
         Long categoryId,
-        Long userId,
         LocalDate dateFrom,
         LocalDate dateTo,
         Integer pageNumber,

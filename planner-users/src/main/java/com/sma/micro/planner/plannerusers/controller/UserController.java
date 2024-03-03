@@ -4,7 +4,6 @@ import com.sma.micro.planner.plannerentity.entity.User;
 import com.sma.micro.planner.plannerusers.mq.MessageProducer;
 import com.sma.micro.planner.plannerusers.search.UserSearchValue;
 import com.sma.micro.planner.plannerusers.service.UserService;
-import com.sma.micro.planner.plannerutils.rest.webclient.UserWebClientBuilder;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,6 @@ import static org.springframework.http.HttpStatus.OK;
 public class UserController {
     public static final String ID_COLUMN = "id";
     private final UserService userService;
-    private final UserWebClientBuilder userWebClientBuilder;
     private final MessageProducer messageProducer;
 
     @PostMapping("/add")
