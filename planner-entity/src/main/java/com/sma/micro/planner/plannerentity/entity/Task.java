@@ -26,6 +26,7 @@ public class Task {
 
     @Column(name = "completed")
     @Convert(converter = NumericBooleanConverter.class)
+    @Builder.Default
     private Boolean completed = false;
 
     @Column(name = "task_date")

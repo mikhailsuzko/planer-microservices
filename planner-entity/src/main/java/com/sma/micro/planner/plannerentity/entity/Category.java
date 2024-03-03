@@ -26,9 +26,11 @@ public class Category {
     private String title;
 
     @Column(name = "completed_count", updatable = false)
+    @Builder.Default
     private Long completedCount = 0L;
 
     @Column(name = "uncompleted_count", updatable = false)
+    @Builder.Default
     private Long uncompletedCount = 0L;
 
     @Column(name = "user_id", nullable = false)
