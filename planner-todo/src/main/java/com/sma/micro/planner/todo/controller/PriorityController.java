@@ -4,7 +4,6 @@ import com.sma.micro.planner.plannerentity.entity.Priority;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.PriorityService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.sma.micro.planner.plannerutils.util.Utils.userIdNotFound;
-import static io.micrometer.common.util.StringUtils.isBlank;
+import static org.apache.logging.log4j.util.Strings.isBlank;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
 @RestController
@@ -28,7 +27,7 @@ public class PriorityController {
     @PostMapping("/all")
     public ResponseEntity<List<Priority>> findAll(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-        if (!Strings.isBlank(userId)) {
+        if (!isBlank(userId)) {
 //        if (userExist(userId)) {
             return ResponseEntity.ok(priorityService.findAll(userId));
         }

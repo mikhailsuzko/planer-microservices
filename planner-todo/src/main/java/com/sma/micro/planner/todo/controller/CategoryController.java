@@ -3,7 +3,6 @@ package com.sma.micro.planner.todo.controller;
 import com.sma.micro.planner.plannerentity.entity.Category;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.CategoryService;
-import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +39,7 @@ public class CategoryController {
         if (category.getId() != null) {
             return new ResponseEntity("Redundant param: id must be null", NOT_ACCEPTABLE);
         }
-        if (StringUtils.isBlank(category.getTitle())) {
+        if (isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
 //        if (userWebClientBuilder.userExist(category.getUserId())) {
@@ -57,7 +56,7 @@ public class CategoryController {
         if (category.getId() == null || category.getId() == 0) {
             return new ResponseEntity("Missed param id", NOT_ACCEPTABLE);
         }
-        if (StringUtils.isBlank(category.getTitle())) {
+        if (isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
 //        if (userWebClientBuilder.userExist(category.getUserId())) {

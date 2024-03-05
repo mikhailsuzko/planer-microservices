@@ -4,7 +4,6 @@ import com.sma.micro.planner.plannerentity.entity.Task;
 import com.sma.micro.planner.plannerutils.rest.rest_template.UserRestBuilder;
 import com.sma.micro.planner.todo.search.TaskSearchValues;
 import com.sma.micro.planner.todo.service.TaskService;
-import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,7 +46,7 @@ public class TaskController {
         if (task.getId() != null) {
             return new ResponseEntity("Redundant param: id must be null", NOT_ACCEPTABLE);
         }
-        if (StringUtils.isBlank(task.getTitle())) {
+        if (isBlank(task.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
 //        if (userRestBuilder.userExist(task.getUserId())) {
@@ -64,7 +63,7 @@ public class TaskController {
         if (task.getId() == null || task.getId() == 0) {
             return new ResponseEntity("Missed param id", NOT_ACCEPTABLE);
         }
-        if (StringUtils.isBlank(task.getTitle())) {
+        if (isBlank(task.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
 //        if (userRestBuilder.userExist(task.getUserId())) {
@@ -92,7 +91,7 @@ public class TaskController {
 
             var dateFrom = params.dateFrom() == null ? null : params.dateFrom().atStartOfDay();
             var dateTo = params.dateTo() == null ? null : params.dateTo().atTime(23, 59, 59, 999_999_999);
-            var direction = StringUtils.isBlank(params.sortDirection())
+            var direction = isBlank(params.sortDirection())
                     || params.sortDirection().trim().equalsIgnoreCase("ask")
                     ? Sort.Direction.ASC : Sort.Direction.DESC;
             var sort = Sort.by(direction, params.sortColumn(), ID_COLUMN);

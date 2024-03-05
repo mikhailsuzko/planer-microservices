@@ -37,8 +37,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-	implementation 'org.apache.commons:commons-lang3:3.0'
 }
 dependencyManagement {
 	imports {
