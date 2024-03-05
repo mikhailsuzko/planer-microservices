@@ -1,0 +1,42 @@
+Keycloak
+1. Create new realm: todoapp-realm
+2. Create client: todoapp-client (Client authentication: true,
+                                Standard flow: true,
+                                Direct access grants: true)
+3. Create client: user-manage-client (Client authentication: true,
+                                Standard flow: true,
+                                Service accounts roles: true),
+                      SA roles: view-realm - for adding roles
+                                manage-users - for creating users
+4. Add roles: user, admin
+
+SSL
+1. Create SSL certificate in KeyStore:
+    1.1 rootca -> Sign new key pair
+    1.2 Set common name: localhost
+    1.3 Add extensions -> Use standard -> SSL-server
+        Set Subject Alternative names:
+            DNS: localhost
+            URI: localhost
+            IP: 127.0.0.1
+    1.4 Save
+2. Export for KC:
+    2.1 Export chain
+    2.2 Export private key:
+        Encrypt: false
+3. Export for api-gateway:
+    3.1 Export key pair (set password)
+
+JAVA SSL
+1. In KeyStore JDK certs:
+    /Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home/lib/security/cacerts
+2. Import Trusted Certificate
+3. Select rootca
+4. Save (check permissions to the file 'cacerts', if there is a problem)
+
+SSL properties:
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:ssl/localhost.pfx
+server.ssl.key-store-password=root
+server.ssl.key-store-provider=SunJSSE

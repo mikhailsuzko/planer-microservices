@@ -1,0 +1,18 @@
+version: '3.5'
+
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: root
+      KC_HTTPS_CERTIFICATE_FILE: /etc/x509/https/tls.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/x509/https/tls.key
+    command: ["start-dev", "--http-port=8180", "--https-port=8443"]
+    ports:
+      - "8180:8180"
+      - "8443:8443"
+    volumes:
+      - ./certs/localhost.cer:/etc/x509/https/tls.crt
+      - ./certs/localhost.p8.pem:/etc/x509/https/tls.key
