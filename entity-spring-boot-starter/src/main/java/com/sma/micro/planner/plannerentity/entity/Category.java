@@ -1,5 +1,6 @@
 package com.sma.micro.planner.plannerentity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -34,6 +35,7 @@ public class Category {
     private Long uncompletedCount = 0L;
 
     @Column(name = "user_id", nullable = false)
+    @JsonIgnore
     private String userId;
 
     @Override

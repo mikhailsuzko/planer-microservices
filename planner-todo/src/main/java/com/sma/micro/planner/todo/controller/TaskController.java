@@ -1,7 +1,6 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Task;
-import com.sma.micro.planner.plannerutils.rest.rest_template.UserRestBuilder;
 import com.sma.micro.planner.todo.search.TaskSearchValues;
 import com.sma.micro.planner.todo.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,12 @@ import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 @RequiredArgsConstructor
 public class TaskController {
     private static final String ID_COLUMN = "id";
+    private static final String TITLE_COLUMN = "title";
     private final TaskService taskService;
-    private final UserRestBuilder userRestBuilder;
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Task>> findAll(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-//        if (userRestBuilder.userExist(userId)) {
         if (!isBlank(userId)) {
             return ResponseEntity.ok(taskService.findAll(userId));
         }
@@ -49,7 +47,6 @@ public class TaskController {
         if (isBlank(task.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-//        if (userRestBuilder.userExist(task.getUserId())) {
         if (!isBlank(task.getUserId())) {
             return ResponseEntity.ok(taskService.add(task));
         }
@@ -66,7 +63,6 @@ public class TaskController {
         if (isBlank(task.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-//        if (userRestBuilder.userExist(task.getUserId())) {
         if (!isBlank(task.getUserId())) {
             taskService.update(task);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -84,17 +80,20 @@ public class TaskController {
     public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues params, @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
         if (isBlank(userId)) {
-            return new ResponseEntity("userId шы уьзен", NOT_ACCEPTABLE);
+            return new ResponseEntity("userId is empty", NOT_ACCEPTABLE);
         }
-//        if (userRestBuilder.userExist(params.userId())) {
         if (!isBlank(jwt.getSubject())) {
 
             var dateFrom = params.dateFrom() == null ? null : params.dateFrom().atStartOfDay();
             var dateTo = params.dateTo() == null ? null : params.dateTo().atTime(23, 59, 59, 999_999_999);
             var direction = isBlank(params.sortDirection())
-                    || params.sortDirection().trim().equalsIgnoreCase("ask")
+                    || params.sortDirection().trim().equalsIgnoreCase("asc")
                     ? Sort.Direction.ASC : Sort.Direction.DESC;
-            var sort = Sort.by(direction, params.sortColumn(), ID_COLUMN);
+            var sort = Sort.by(direction, params.sortColumn());
+            if (!params.sortColumn().equals(TITLE_COLUMN)) {
+                sort = sort.and(Sort.by(Sort.Direction.ASC, TITLE_COLUMN));
+            }
+
             PageRequest request = PageRequest.of(params.pageNumber(), params.pageSize(), sort);
 
             var tasks = taskService.findByParams(params.title(), params.completed(),
@@ -106,8 +105,8 @@ public class TaskController {
         return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/id")
-    public ResponseEntity<Task> findById(@RequestBody Long id) {
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Task> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(taskService.findById(id));
         } catch (NoSuchElementException ex) {

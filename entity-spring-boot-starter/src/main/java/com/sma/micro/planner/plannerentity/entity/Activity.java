@@ -1,5 +1,6 @@
 package com.sma.micro.planner.plannerentity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class Activity {
     private Boolean activated;
 
     @Column(name = "user_id", nullable = false)
+    @JsonIgnore
     private String userId;
 
 

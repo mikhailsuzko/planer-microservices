@@ -1,5 +1,6 @@
 package com.sma.micro.planner.plannerentity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,12 +21,13 @@ public class Statistics {
     private Long id;
 
     @Column(name = "completed_total", nullable = false)
-    private Long completed;
+    private Long completedTotal;
 
     @Column(name = "uncompleted_total", nullable = false)
-    private Long uncompleted;
+    private Long uncompletedTotal;
 
     @Column(name = "user_id", nullable = false)
+    @JsonIgnore
     private String userId;
 
     @Override

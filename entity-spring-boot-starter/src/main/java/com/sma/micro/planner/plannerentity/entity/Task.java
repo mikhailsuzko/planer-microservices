@@ -1,5 +1,6 @@
 package com.sma.micro.planner.plannerentity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.type.NumericBooleanConverter;
@@ -41,6 +42,7 @@ public class Task {
     private Priority priority;
 
     @Column(name = "user_id", nullable = false)
+    @JsonIgnore
     private String userId;
 
     @Override

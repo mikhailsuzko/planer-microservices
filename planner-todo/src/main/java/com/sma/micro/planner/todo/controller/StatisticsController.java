@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.NoSuchElementException;
@@ -22,7 +22,7 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
     private final UserRestBuilder userRestBuilder;
 
-    @PostMapping("/stat")
+    @GetMapping("/stat")
     public ResponseEntity<Statistics> stat(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
 //        if (userRestBuilder.userExist(userId)) {

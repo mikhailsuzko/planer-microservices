@@ -24,7 +24,7 @@ public class PriorityController {
     private final PriorityService priorityService;
 //    private final UserFeignClient userFeignClient;
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Priority>> findAll(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
         if (!isBlank(userId)) {
@@ -44,10 +44,7 @@ public class PriorityController {
         if (isBlank(priority.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-        if (userExist(priority.getUserId())) {
-            return ResponseEntity.ok(priorityService.add(priority));
-        }
-        return new ResponseEntity(userIdNotFound(priority.getUserId()), NOT_ACCEPTABLE);
+        return ResponseEntity.ok(priorityService.add(priority));
     }
 
     @PutMapping("/update")
@@ -59,11 +56,8 @@ public class PriorityController {
         if (isBlank(priority.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-        if (userExist(priority.getUserId())) {
-            priorityService.update(priority);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity(userIdNotFound(priority.getUserId()), NOT_ACCEPTABLE);
+        priorityService.update(priority);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -82,8 +76,8 @@ public class PriorityController {
         return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/id")
-    public ResponseEntity<Priority> findById(@RequestBody Long id) {
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Priority> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(priorityService.findById(id));
         } catch (NoSuchElementException ex) {
@@ -91,7 +85,4 @@ public class PriorityController {
         }
     }
 
-    private boolean userExist(String userId) {
-        return true; //userFeignClient.findUserById(userId).getBody() != null;
-    }
 }

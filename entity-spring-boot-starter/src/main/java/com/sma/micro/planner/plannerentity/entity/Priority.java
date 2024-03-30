@@ -1,5 +1,6 @@
 package com.sma.micro.planner.plannerentity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -29,6 +30,7 @@ public class Priority {
     private String color;
 
     @Column(name = "user_id", nullable = false)
+    @JsonIgnore
     private String userId;
 
     @Override

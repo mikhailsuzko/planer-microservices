@@ -22,9 +22,8 @@ import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-//    private final UserWebClientBuilder userWebClientBuilder;
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Category>> findAll(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
         if (!isBlank(userId)) {
@@ -59,7 +58,6 @@ public class CategoryController {
         if (isBlank(category.getTitle())) {
             return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
         }
-//        if (userWebClientBuilder.userExist(category.getUserId())) {
         if (!isBlank(category.getUserId())) {
             categoryService.update(category);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -76,7 +74,6 @@ public class CategoryController {
     @PostMapping("/search")
     public ResponseEntity<List<Category>> search(@RequestBody SearchValues params, @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-//        if (params.userId() != null && userWebClientBuilder.userExist(params.userId())) {
         if (!isBlank(userId)) {
             var categories = categoryService.findByTitle(params.title(), userId);
             return ResponseEntity.ok(categories);
@@ -85,8 +82,8 @@ public class CategoryController {
 
     }
 
-    @PostMapping("/id")
-    public ResponseEntity<Category> findById(@RequestBody Long id) {
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Category> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(categoryService.findById(id));
         } catch (NoSuchElementException ex) {
