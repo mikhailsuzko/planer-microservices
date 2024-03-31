@@ -29,7 +29,7 @@ public class SpringSecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(jwtConverter);
 
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/category/*", "/priority/*", "/task/*").hasRole("user")
+                        .requestMatchers("/category/*", "/priority/*", "/task/*", "/data/*").hasRole("user")
                         .anyRequest().authenticated())
 
                 .csrf(AbstractHttpConfigurer::disable)
