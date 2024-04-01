@@ -3,7 +3,9 @@ package com.sma.micro.planner.todo.service;
 
 import com.sma.micro.planner.plannerentity.entity.Priority;
 import com.sma.micro.planner.plannerutils.util.Utils;
+import com.sma.micro.planner.todo.dto.PriorityDto;
 import com.sma.micro.planner.todo.repository.PriorityRepository;
+import com.sma.micro.planner.todo.service.mapper.PriorityMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,20 +19,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PriorityService {
     private final PriorityRepository repository;
+    private final PriorityMapper mapper;
 
     public Priority findById(Long id) {
         return repository.findById(id).orElseThrow();
     }
 
-    public List<Priority> findAll(String userId) {
-        return repository.findByUserIdOrderByIdAsc(userId);
+    public List<PriorityDto> findAll(String userId) {
+        return repository.findByUserIdOrderByIdAsc(userId).stream()
+                .map(mapper::priorityToDto)
+                .toList();
     }
 
-    public Priority add(Priority priority) {
-        return repository.save(priority);
+    public PriorityDto add(PriorityDto priorityDto, String userId) {
+        var priority = mapper.dtoToPriority(priorityDto, userId);
+        return mapper.priorityToDto(repository.save(priority));
     }
 
-    public void update(Priority priority) {
+    public void update(PriorityDto priorityDto, String userId) {
+        var priority = mapper.dtoToPriority(priorityDto, userId);
         repository.save(priority);
     }
 
@@ -38,8 +45,10 @@ public class PriorityService {
         repository.deleteById(id);
     }
 
-    public List<Priority> findByTitle(String title, String userId) {
-        return repository.findByTitle(Utils.prepareParam(title), userId);
+    public List<PriorityDto> findByTitle(String title, String userId) {
+        return repository.findByTitle(Utils.prepareParam(title), userId).stream()
+                .map(mapper::priorityToDto)
+                .toList();
     }
 
     public void addAll(List<Priority> priorities) {
