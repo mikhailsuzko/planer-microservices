@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(name = "user_data", schema = "users")
+@Table(name = "user_data")
 public class User {
     @Id
     @Column(name = "id", nullable = false)

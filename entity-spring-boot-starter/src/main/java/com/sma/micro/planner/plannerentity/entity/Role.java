@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-@Table(name = "role_data", schema = "users")
+@Table(name = "role_data")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

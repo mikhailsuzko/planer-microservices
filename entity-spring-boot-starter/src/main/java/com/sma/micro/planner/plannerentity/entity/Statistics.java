@@ -13,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "statistics", schema = "todo")
+@Table(name = "statistics")
 public class Statistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

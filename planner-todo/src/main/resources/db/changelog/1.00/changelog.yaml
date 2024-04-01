@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: 20240331120000_init_tables.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 20240331130100_trigger_add_task.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 20240331130200_trigger_update_task.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 20240331130300_trigger_delete_task.sql
+      relativeToChangelogFile: true

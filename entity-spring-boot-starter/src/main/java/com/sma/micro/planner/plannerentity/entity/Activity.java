@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Table(name = "activity", schema = "todo")
+@Table(name = "activity")
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
