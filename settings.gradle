@@ -1,9 +1,9 @@
 rootProject.name = 'planer-microservices'
 
+includeBuild 'entity-spring-boot-starter'
+includeBuild 'utils-spring-boot-starter'
 includeBuild 'planner-config'
 includeBuild 'planner-server'
 includeBuild 'planner-gateway'
 includeBuild 'planner-todo'
 includeBuild 'planner-users'
-includeBuild 'entity-spring-boot-starter'
-includeBuild 'utils-spring-boot-starter'

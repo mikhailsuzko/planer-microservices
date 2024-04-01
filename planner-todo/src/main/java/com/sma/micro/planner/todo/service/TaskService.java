@@ -3,7 +3,9 @@ package com.sma.micro.planner.todo.service;
 
 import com.sma.micro.planner.plannerentity.entity.Task;
 import com.sma.micro.planner.plannerutils.util.Utils;
+import com.sma.micro.planner.todo.dto.TaskDto;
 import com.sma.micro.planner.todo.repository.TaskRepository;
+import com.sma.micro.planner.todo.service.mapper.TaskMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,20 +22,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskService {
     private final TaskRepository repository;
+    private final TaskMapper mapper;
 
-    public Task findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public TaskDto findById(Long id) {
+        var task = repository.findById(id).orElseThrow();
+        return mapper.taskToDto(task);
     }
 
-    public List<Task> findAll(String userId) {
-        return repository.findByUserIdOrderByTaskDateDescTitleAsc(userId);
+    public List<TaskDto> findAll(String userId) {
+        return repository.findByUserIdOrderByTaskDateDescTitleAsc(userId).stream()
+                .map(mapper::taskToDto)
+                .toList();
     }
 
-    public Task add(Task task) {
-        return repository.save(task);
+    public TaskDto add(TaskDto taskDto, String userId) {
+        var task = mapper.dtoToTask(taskDto, userId);
+        return mapper.taskToDto(repository.save(task));
     }
 
-    public void update(Task task) {
+    public void update(TaskDto taskDto, String userId) {
+        var task = mapper.dtoToTask(taskDto, userId);
         repository.save(task);
     }
 
@@ -41,7 +49,7 @@ public class TaskService {
         repository.deleteById(id);
     }
 
-    public Page<Task> findByParams(String title,
+    public Page<TaskDto> findByParams(String title,
                                    Boolean completed,
                                    Long priorityId,
                                    Long categoryId,
@@ -49,7 +57,7 @@ public class TaskService {
                                    LocalDateTime dateTo,
                                    String userId, Pageable pageable) {
         return repository.findByParams(Utils.prepareParam(title), completed, priorityId, categoryId,
-                dateFrom, dateTo, userId, pageable);
+                dateFrom, dateTo, userId, pageable).map(mapper::taskToDto);
     }
 
     public void addAll(List<Task> tasks) {

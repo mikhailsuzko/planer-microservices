@@ -20,11 +20,13 @@ public class Stat {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "completed_total", nullable = false)
-    private Long completedTotal;
+    @Builder.Default
+    @Column(name = "completed_total", updatable = false, nullable = false)
+    private Long completedTotal = 0L;
 
-    @Column(name = "uncompleted_total", nullable = false)
-    private Long uncompletedTotal;
+    @Builder.Default
+    @Column(name = "uncompleted_total", updatable = false, nullable = false)
+    private Long uncompletedTotal = 0L;
 
     @Column(name = "user_id", nullable = false)
     @JsonIgnore

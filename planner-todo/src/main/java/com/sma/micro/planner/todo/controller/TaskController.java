@@ -1,8 +1,10 @@
 package com.sma.micro.planner.todo.controller;
 
-import com.sma.micro.planner.plannerentity.entity.Task;
+import com.sma.micro.planner.todo.dto.TaskDto;
 import com.sma.micro.planner.todo.search.TaskSearchValues;
 import com.sma.micro.planner.todo.service.TaskService;
+import com.sma.micro.planner.todo.service.ValidationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,60 +16,39 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import static com.sma.micro.planner.plannerutils.util.Utils.userIdNotFound;
 import static org.apache.logging.log4j.util.Strings.isBlank;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
 @RestController
 @RequestMapping("task")
 @RequiredArgsConstructor
 public class TaskController {
-    private static final String ID_COLUMN = "id";
     private static final String TITLE_COLUMN = "title";
     private final TaskService taskService;
+    private final ValidationService validationService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Task>> findAll(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<List<TaskDto>> findAll(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-        if (!isBlank(userId)) {
-            return ResponseEntity.ok(taskService.findAll(userId));
-        }
-        return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
-
+        validationService.validateUserIdIsNotEmpty(userId);
+        return ResponseEntity.ok(taskService.findAll(userId));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Task> add(@RequestBody Task task, @AuthenticationPrincipal Jwt jwt) {
-        task.setUserId(jwt.getSubject());
-        if (task.getId() != null) {
-            return new ResponseEntity("Redundant param: id must be null", NOT_ACCEPTABLE);
-        }
-        if (isBlank(task.getTitle())) {
-            return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
-        }
-        if (!isBlank(task.getUserId())) {
-            return ResponseEntity.ok(taskService.add(task));
-        }
-        return new ResponseEntity(userIdNotFound(task.getUserId()), NOT_ACCEPTABLE);
-
+    public ResponseEntity<TaskDto> add(@RequestBody @Valid TaskDto task, @AuthenticationPrincipal Jwt jwt) {
+        var userId = jwt.getSubject();
+        validationService.validateUserIdIsNotEmpty(userId);
+        validationService.validateTaskId(task, true);
+        return ResponseEntity.ok(taskService.add(task, userId));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> update(@RequestBody Task task, @AuthenticationPrincipal Jwt jwt) {
-        task.setUserId(jwt.getSubject());
-        if (task.getId() == null || task.getId() == 0) {
-            return new ResponseEntity("Missed param id", NOT_ACCEPTABLE);
-        }
-        if (isBlank(task.getTitle())) {
-            return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
-        }
-        if (!isBlank(task.getUserId())) {
-            taskService.update(task);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity(userIdNotFound(task.getUserId()), NOT_ACCEPTABLE);
+    public ResponseEntity<Void> update(@RequestBody @Valid TaskDto task, @AuthenticationPrincipal Jwt jwt) {
+        var userId = jwt.getSubject();
+        validationService.validateUserIdIsNotEmpty(userId);
+        validationService.validateTaskId(task, false);
+        taskService.update(task, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -77,41 +58,33 @@ public class TaskController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues params, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<Page<TaskDto>> search(@RequestBody TaskSearchValues params,
+                                                @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-        if (isBlank(userId)) {
-            return new ResponseEntity("userId is empty", NOT_ACCEPTABLE);
+        validationService.validateUserIdIsNotEmpty(userId);
+
+        var dateFrom = params.dateFrom() == null ? null : params.dateFrom().atStartOfDay();
+        var dateTo = params.dateTo() == null ? null : params.dateTo().atTime(23, 59, 59, 999_999_999);
+        var direction = isBlank(params.sortDirection())
+                || params.sortDirection().trim().equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC : Sort.Direction.DESC;
+        var sort = Sort.by(direction, params.sortColumn());
+        if (!params.sortColumn().equals(TITLE_COLUMN)) {
+            sort = sort.and(Sort.by(Sort.Direction.ASC, TITLE_COLUMN));
         }
-        if (!isBlank(jwt.getSubject())) {
 
-            var dateFrom = params.dateFrom() == null ? null : params.dateFrom().atStartOfDay();
-            var dateTo = params.dateTo() == null ? null : params.dateTo().atTime(23, 59, 59, 999_999_999);
-            var direction = isBlank(params.sortDirection())
-                    || params.sortDirection().trim().equalsIgnoreCase("asc")
-                    ? Sort.Direction.ASC : Sort.Direction.DESC;
-            var sort = Sort.by(direction, params.sortColumn());
-            if (!params.sortColumn().equals(TITLE_COLUMN)) {
-                sort = sort.and(Sort.by(Sort.Direction.ASC, TITLE_COLUMN));
-            }
+        var request = PageRequest.of(params.pageNumber(), params.pageSize(), sort);
 
-            PageRequest request = PageRequest.of(params.pageNumber(), params.pageSize(), sort);
-
-            var tasks = taskService.findByParams(params.title(), params.completed(),
-                    params.priorityId(), params.categoryId(),
-                    dateFrom, dateTo,
-                    jwt.getSubject(), request);
-            return ResponseEntity.ok(tasks);
-        }
-        return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
+        var tasks = taskService.findByParams(params.title(), params.completed(),
+                params.priorityId(), params.categoryId(),
+                dateFrom, dateTo,
+                jwt.getSubject(), request);
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Task> findById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(taskService.findById(id));
-        } catch (NoSuchElementException ex) {
-            return new ResponseEntity("Element with id=" + id + " not found", NOT_ACCEPTABLE);
-        }
+    public ResponseEntity<TaskDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.findById(id));
     }
 
 }

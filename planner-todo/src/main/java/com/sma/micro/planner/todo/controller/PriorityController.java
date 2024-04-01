@@ -5,15 +5,18 @@ import com.sma.micro.planner.todo.dto.PriorityDto;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.PriorityService;
 import com.sma.micro.planner.todo.service.ValidationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("priority")
 @RequiredArgsConstructor
@@ -29,7 +32,8 @@ public class PriorityController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<PriorityDto> add(@RequestBody PriorityDto priority, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<PriorityDto> add(@RequestBody @Valid PriorityDto priority,
+                                           @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
         validationService.validateUserIdIsNotEmpty(userId);
         validationService.validatePriorityId(priority, true);
@@ -37,7 +41,8 @@ public class PriorityController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> update(@RequestBody PriorityDto priority, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<Void> update(@RequestBody @Valid PriorityDto priority,
+                                       @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
         validationService.validateUserIdIsNotEmpty(userId);
         validationService.validatePriorityId(priority, false);
@@ -52,7 +57,8 @@ public class PriorityController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<PriorityDto>> search(@RequestBody SearchValues params, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<List<PriorityDto>> search(@RequestBody SearchValues params,
+                                                    @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
         validationService.validateUserIdIsNotEmpty(userId);
         var categories = priorityService.findByTitle(params.title(), userId);

@@ -2,6 +2,7 @@ package com.sma.micro.planner.todo.service;
 
 import com.sma.micro.planner.todo.dto.CategoryDto;
 import com.sma.micro.planner.todo.dto.PriorityDto;
+import com.sma.micro.planner.todo.dto.TaskDto;
 import com.sma.micro.planner.todo.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,18 @@ public class ValidationService {
         } else if (!isNew && (priority.id() == null || priority.id() == 0)) {
             var statusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Priority id='%d' can't be empty", priority.id()));
+            throw new ValidationException(statusException);
+        }
+    }
+
+    public void validateTaskId(TaskDto task, boolean isNew) {
+        if (isNew && task.id() != null) {
+            var statusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Task id='%d' must be null", task.id()));
+            throw new ValidationException(statusException);
+        } else if (!isNew && (task.id() == null || task.id() == 0)) {
+            var statusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Task id='%d' can't be empty", task.id()));
             throw new ValidationException(statusException);
         }
     }

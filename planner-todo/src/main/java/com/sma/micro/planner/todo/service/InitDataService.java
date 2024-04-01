@@ -24,7 +24,7 @@ public class InitDataService {
             statService.findStat(userId);
             return false;
         } catch (NoSuchElementException e) {
-            var statistics = Stat.builder().userId(userId).completedTotal(0L).uncompletedTotal(0L).build();
+            var statistics = Stat.builder().userId(userId).build();
             statService.add(statistics);
 
             var priorityHigh = Priority.builder().title("High").color("#FBBABA").userId(userId).build();
