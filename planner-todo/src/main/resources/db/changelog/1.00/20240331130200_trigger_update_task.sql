@@ -15,7 +15,7 @@ BEGIN
 				uncompleted_count = uncompleted_count - 1
 			WHERE id = NEW.category_id and NEW.user_id = user_id;
 
-			UPDATE statistics
+			UPDATE stat
  			SET completed_total = completed_total + 1,
 				uncompleted_total = uncompleted_total - 1
 			WHERE OLD.user_id = user_id;
@@ -25,7 +25,7 @@ BEGIN
 				uncompleted_count = uncompleted_count + 1
 			WHERE id = NEW.category_id and NEW.user_id = user_id;
 
-			UPDATE statistics
+			UPDATE stat
  			SET completed_total = completed_total - 1,
 				uncompleted_total = uncompleted_total + 1
 			WHERE OLD.user_id = user_id;
@@ -58,7 +58,7 @@ BEGIN
 			SET uncompleted_count = uncompleted_count + 1
 			WHERE id = NEW.category_id and NEW.user_id = user_id;
 
-			UPDATE statistics
+			UPDATE stat
 			SET completed_total = completed_total - 1,
 				uncompleted_total = uncompleted_total + 1
 			WHERE NEW.user_id = user_id;
@@ -71,7 +71,7 @@ BEGIN
 			SET completed_count = completed_count + 1
 			WHERE id = NEW.category_id and NEW.user_id = user_id;
 
-			UPDATE statistics
+			UPDATE stat
 			SET completed_total = completed_total + 1,
 				uncompleted_total = uncompleted_total - 1
 			WHERE NEW.user_id = user_id;

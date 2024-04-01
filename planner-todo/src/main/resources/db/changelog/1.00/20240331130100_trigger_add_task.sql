@@ -23,11 +23,11 @@ BEGIN
 	END IF;
 
 	IF (NEW.completed = 1) THEN
-		UPDATE statistics
+		UPDATE stat
 		SET completed_total = completed_total + 1
 		WHERE user_id = NEW.user_id;
 	ELSE
-		UPDATE statistics
+		UPDATE stat
 		SET uncompleted_total = uncompleted_total + 1
 		WHERE user_id = NEW.user_id;
 	END IF;

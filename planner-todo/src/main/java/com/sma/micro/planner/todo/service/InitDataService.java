@@ -2,7 +2,7 @@ package com.sma.micro.planner.todo.service;
 
 import com.sma.micro.planner.plannerentity.entity.Category;
 import com.sma.micro.planner.plannerentity.entity.Priority;
-import com.sma.micro.planner.plannerentity.entity.Statistics;
+import com.sma.micro.planner.plannerentity.entity.Stat;
 import com.sma.micro.planner.plannerentity.entity.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,15 @@ public class InitDataService {
     private final TaskService taskService;
     private final PriorityService priorityService;
     private final CategoryService categoryService;
-    private final StatisticsService statisticsService;
+    private final StatService statService;
 
     public boolean init(String userId) {
         try {
-            statisticsService.findStatistics(userId);
+            statService.findStat(userId);
             return false;
         } catch (NoSuchElementException e) {
-            var statistics = Statistics.builder().userId(userId).completedTotal(0L).uncompletedTotal(0L).build();
-            statisticsService.add(statistics);
+            var statistics = Stat.builder().userId(userId).completedTotal(0L).uncompletedTotal(0L).build();
+            statService.add(statistics);
 
             var priorityHigh = Priority.builder().title("High").color("#FBBABA").userId(userId).build();
             var priorityLow = Priority.builder().title("Low").color("#CCE7FF").userId(userId).build();

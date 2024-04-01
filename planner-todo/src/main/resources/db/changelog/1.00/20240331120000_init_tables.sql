@@ -25,14 +25,14 @@ CREATE TABLE IF NOT EXISTS priority
 -- rollback DROP TABLE IF EXISTS priority;
 
 -- changeset msuzko:init_statistics
-CREATE TABLE IF NOT EXISTS statistics
+CREATE TABLE IF NOT EXISTS stat
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     completed_total BIGINT NOT NULL DEFAULT 0,
     uncompleted_total BIGINT NOT NULL DEFAULT 0,
     user_id VARCHAR(36) UNIQUE NOT NULL
 );
--- rollback DROP TABLE IF EXISTS statistics;
+-- rollback DROP TABLE IF EXISTS stat;
 
 -- changeset msuzko:init_task
 CREATE TABLE IF NOT EXISTS task

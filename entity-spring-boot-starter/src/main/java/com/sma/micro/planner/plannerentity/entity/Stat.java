@@ -13,8 +13,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "statistics")
-public class Statistics {
+@Table(name = "stat")
+public class Stat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -34,7 +34,7 @@ public class Statistics {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Statistics that = (Statistics) o;
+        Stat that = (Stat) o;
         return Objects.equals(id, that.id);
     }
 
