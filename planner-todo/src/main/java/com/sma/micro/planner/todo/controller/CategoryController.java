@@ -1,68 +1,53 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.plannerentity.entity.Category;
+import com.sma.micro.planner.todo.dto.CategoryDto;
 import com.sma.micro.planner.todo.search.SearchValues;
 import com.sma.micro.planner.todo.service.CategoryService;
+import com.sma.micro.planner.todo.service.ValidationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import static com.sma.micro.planner.plannerutils.util.Utils.userIdNotFound;
-import static org.apache.logging.log4j.util.Strings.isBlank;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
-
+@Validated
 @RestController
 @RequestMapping("category")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    private final ValidationService validationService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> findAll(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<List<CategoryDto>> findAll(@AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-        if (!isBlank(userId)) {
-            return ResponseEntity.ok(categoryService.findAll(userId));
-        }
-        return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
+        validationService.validateUserIdIsNotEmpty(userId);
+        return ResponseEntity.ok(categoryService.findAll(userId));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Category> add(@RequestBody Category category, @AuthenticationPrincipal Jwt jwt) {
-        category.setUserId(jwt.getSubject());
-        if (category.getId() != null) {
-            return new ResponseEntity("Redundant param: id must be null", NOT_ACCEPTABLE);
-        }
-        if (isBlank(category.getTitle())) {
-            return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
-        }
-//        if (userWebClientBuilder.userExist(category.getUserId())) {
-        if (!isBlank(category.getUserId())) {
-            return ResponseEntity.ok(categoryService.add(category));
-        }
-        return new ResponseEntity(userIdNotFound(category.getUserId()), NOT_ACCEPTABLE);
-
+    public ResponseEntity<CategoryDto> add(@RequestBody @Valid CategoryDto category,
+                                           @AuthenticationPrincipal Jwt jwt) {
+        var userId = jwt.getSubject();
+        validationService.validateUserIdIsNotEmpty(userId);
+        validationService.validateCategoryId(category, true);
+        return ResponseEntity.ok(categoryService.add(category, userId));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> update(@RequestBody Category category, @AuthenticationPrincipal Jwt jwt) {
-        category.setUserId(jwt.getSubject());
-        if (category.getId() == null || category.getId() == 0) {
-            return new ResponseEntity("Missed param id", NOT_ACCEPTABLE);
-        }
-        if (isBlank(category.getTitle())) {
-            return new ResponseEntity("Missed param title", NOT_ACCEPTABLE);
-        }
-        if (!isBlank(category.getUserId())) {
-            categoryService.update(category);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity(userIdNotFound(category.getUserId()), NOT_ACCEPTABLE);
+    public ResponseEntity<Void> update(@RequestBody @Valid CategoryDto category,
+                                       @AuthenticationPrincipal Jwt jwt) {
+        var userId = jwt.getSubject();
+        validationService.validateUserIdIsNotEmpty(userId);
+        validationService.validateCategoryId(category, false);
+        categoryService.update(category, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -72,23 +57,17 @@ public class CategoryController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Category>> search(@RequestBody SearchValues params, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<List<CategoryDto>> search(@RequestBody SearchValues params, @AuthenticationPrincipal Jwt jwt) {
         var userId = jwt.getSubject();
-        if (!isBlank(userId)) {
-            var categories = categoryService.findByTitle(params.title(), userId);
-            return ResponseEntity.ok(categories);
-        }
-        return new ResponseEntity(userIdNotFound(userId), NOT_ACCEPTABLE);
+        validationService.validateUserIdIsNotEmpty(userId);
+        var categories = categoryService.findByTitle(params.title(), userId);
+        return ResponseEntity.ok(categories);
 
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(categoryService.findById(id));
-        } catch (NoSuchElementException ex) {
-            return new ResponseEntity("Element with id=" + id + " not found", NOT_ACCEPTABLE);
-        }
+        return ResponseEntity.ok(categoryService.findById(id));
     }
 
 }

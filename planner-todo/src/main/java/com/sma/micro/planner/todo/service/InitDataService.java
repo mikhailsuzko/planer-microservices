@@ -27,9 +27,9 @@ public class InitDataService {
             var statistics = Statistics.builder().userId(userId).completedTotal(0L).uncompletedTotal(0L).build();
             statisticsService.add(statistics);
 
-            var priorityHigh = Priority.builder().title("High").color("#FF0000").userId(userId).build();
-            var priorityLow = Priority.builder().title("Low").color("#0000FF").userId(userId).build();
-            var priorityMed = Priority.builder().title("Medium").color("#008000").userId(userId).build();
+            var priorityHigh = Priority.builder().title("High").color("#FBBABA").userId(userId).build();
+            var priorityLow = Priority.builder().title("Low").color("#CCE7FF").userId(userId).build();
+            var priorityMed = Priority.builder().title("Medium").color("#CFF4CF").userId(userId).build();
             priorityService.addAll(List.of(priorityHigh, priorityMed, priorityLow));
 
             var categoryWork = Category.builder().title("Work")
