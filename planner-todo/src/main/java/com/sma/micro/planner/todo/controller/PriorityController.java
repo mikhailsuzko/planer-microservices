@@ -1,8 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
-import com.sma.micro.planner.plannerentity.entity.Priority;
 import com.sma.micro.planner.todo.dto.PriorityDto;
-import com.sma.micro.planner.todo.search.SearchValues;
+import com.sma.micro.planner.todo.model.search.SearchValues;
 import com.sma.micro.planner.todo.service.PriorityService;
 import com.sma.micro.planner.todo.service.ValidationService;
 import jakarta.validation.Valid;
@@ -66,7 +65,7 @@ public class PriorityController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Priority> findById(@PathVariable Long id) {
+    public ResponseEntity<PriorityDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(priorityService.findById(id));
     }
 }

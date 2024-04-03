@@ -32,11 +32,11 @@ public class InitDataService {
             var priorityMed = Priority.builder().title("Medium").color("#CFF4CF").userId(userId).build();
             priorityService.addAll(List.of(priorityHigh, priorityMed, priorityLow));
 
-            var categoryWork = Category.builder().title("Work")
-                    .completedCount(0L).uncompletedCount(0L).userId(userId).build();
-            var categoryHome = Category.builder().title("Home")
-                    .completedCount(0L).uncompletedCount(0L).userId(userId).build();
-            categoryService.addAll(List.of(categoryWork, categoryHome));
+            var categoryWork = Category.builder().title("Work").userId(userId).build();
+            var categoryHome = Category.builder().title("Home").userId(userId).build();
+            var categorySport = Category.builder().title("Sport").userId(userId).build();
+            var categoryTravelling = Category.builder().title("Travelling").userId(userId).build();
+            categoryService.addAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
 
             var tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
             var oneWeek = LocalDate.now().plusDays(7).atStartOfDay();
@@ -46,7 +46,6 @@ public class InitDataService {
                     .priority(priorityHigh)
                     .category(categoryWork)
                     .title("Prepare report")
-                    .completed(false)
                     .userId(userId)
                     .build();
             var task2 = Task.builder()
@@ -54,7 +53,6 @@ public class InitDataService {
                     .priority(priorityLow)
                     .category(categoryHome)
                     .title("Reading")
-                    .completed(false)
                     .userId(userId)
                     .build();
             taskService.addAll(List.of(task1, task2));

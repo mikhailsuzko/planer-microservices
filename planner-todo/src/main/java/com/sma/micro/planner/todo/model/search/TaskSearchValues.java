@@ -1,4 +1,4 @@
-package com.sma.micro.planner.todo.search;
+package com.sma.micro.planner.todo.model.search;
 
 import java.time.LocalDate;
 

@@ -21,8 +21,9 @@ public class PriorityService {
     private final PriorityRepository repository;
     private final PriorityMapper mapper;
 
-    public Priority findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public PriorityDto findById(Long id) {
+        var priority = repository.findById(id).orElseThrow();
+        return mapper.priorityToDto(priority);
     }
 
     public List<PriorityDto> findAll(String userId) {

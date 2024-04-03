@@ -21,8 +21,9 @@ public class CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
-    public Category findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public CategoryDto findById(Long id) {
+        var category = repository.findById(id).orElseThrow();
+        return mapper.categoryToDto(category);
     }
 
     public List<CategoryDto> findAll(String userId) {

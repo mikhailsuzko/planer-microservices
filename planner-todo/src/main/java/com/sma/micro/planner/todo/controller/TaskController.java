@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
 import com.sma.micro.planner.todo.dto.TaskDto;
-import com.sma.micro.planner.todo.search.TaskSearchValues;
+import com.sma.micro.planner.todo.model.search.TaskSearchValues;
 import com.sma.micro.planner.todo.service.TaskService;
 import com.sma.micro.planner.todo.service.ValidationService;
 import jakarta.validation.Valid;

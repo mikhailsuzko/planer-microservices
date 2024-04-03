@@ -1,8 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
-import com.sma.micro.planner.plannerentity.entity.Category;
 import com.sma.micro.planner.todo.dto.CategoryDto;
-import com.sma.micro.planner.todo.search.SearchValues;
+import com.sma.micro.planner.todo.model.search.SearchValues;
 import com.sma.micro.planner.todo.service.CategoryService;
 import com.sma.micro.planner.todo.service.ValidationService;
 import jakarta.validation.Valid;
@@ -66,7 +65,7 @@ public class CategoryController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Category> findById(@PathVariable Long id) {
+    public ResponseEntity<CategoryDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.findById(id));
     }
 
