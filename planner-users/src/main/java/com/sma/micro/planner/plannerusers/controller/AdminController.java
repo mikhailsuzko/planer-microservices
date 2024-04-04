@@ -1,7 +1,6 @@
 package com.sma.micro.planner.plannerusers.controller;
 
 import com.sma.micro.planner.plannerusers.dto.UserDto;
-import com.sma.micro.planner.plannerusers.mq.MessageProducer;
 import com.sma.micro.planner.plannerusers.service.keycloak.KeycloakUtils;
 import com.sma.micro.planner.plannerutils.model.Roles;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +24,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 @RequestMapping("/admin/user")
 public class AdminController {
-    private final MessageProducer messageProducer;
     private final KeycloakUtils keycloakUtils;
-    private static List<String> defaultUserRoles = List.of(Roles.USER.getName());
+    private static final List<String> defaultUserRoles = List.of(Roles.USER.getName());
 
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody UserDto user) {
@@ -47,9 +45,6 @@ public class AdminController {
         var userId = CreatedResponseUtil.getCreatedId(response);
         log.info("User created with id '{}'", userId);
         keycloakUtils.addRoles(userId, defaultUserRoles);
-//        if (user != null) {
-//            messageProducer.sendNewUserMessage(user.getId());
-//        }
         var message = response.getStatus() == CREATED.value()
                 ? "User crated" : response.getStatusInfo().getReasonPhrase();
         return ResponseEntity.status(response.getStatus()).body(message);

@@ -39,7 +39,6 @@ public class SpringSecurityConfig {
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(converter))
                         .authenticationEntryPoint(authEntryPoint)
                 )
-                //.requiresChannel(rc -> rc.anyRequest().requiresSecure())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS));
 
         return http.build();

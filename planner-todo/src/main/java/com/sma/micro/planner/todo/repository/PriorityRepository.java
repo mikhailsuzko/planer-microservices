@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
@@ -19,4 +20,8 @@ public interface PriorityRepository extends JpaRepository<Priority, Long> {
             "or lower(p.title) like :title)" +
             "order by p.title asc ")
     List<Priority> findByTitle(String title, String userId);
+
+    void deleteByIdAndUserId(Long id, String userId);
+
+    Optional<Priority> findByIdAndUserId(Long id, String userId);
 }

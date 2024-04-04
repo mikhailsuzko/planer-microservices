@@ -1,5 +1,6 @@
 package com.sma.micro.planner.todo.handler;
 
+import com.sma.micro.planner.todo.exception.AuthenticationException;
 import com.sma.micro.planner.todo.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ class RestExceptionHandlerTest {
     @Test
     void handleIllegalArgumentException() {
         var message = "Invalid argument";
-        var exception = new IllegalArgumentException(message);
-        var result = handler.handleIllegalArgumentException(exception, HTTP_REQUEST);
+        var exception = new AuthenticationException(message);
+        var result = handler.handleAuthenticationException(exception, HTTP_REQUEST);
 
         assertThat(result).isEqualTo(new ResponseEntity<>(message, HttpStatus.BAD_REQUEST));
     }

@@ -9,17 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-
-    @Query("SELECT c " +
-            "from Category c " +
-            "where c.userId = :userId " +
-            "and (:title is null " +
-            "or lower(c.title) like :title)" +
-            "order by c.title asc ")
-    List<Task> findByTitle(String title, String userId);
 
     @Query("SELECT t " +
             "from Task t " +
@@ -42,4 +35,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
                             Pageable pageable);
 
     List<Task> findByUserIdOrderByTaskDateDescTitleAsc(String userId);
+
+    void deleteByIdAndUserId(Long id, String userId);
+
+    Optional<Task> findByIdAndUserId(Long id, String userId);
 }

@@ -21,8 +21,8 @@ public class CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
-    public CategoryDto findById(Long id) {
-        var category = repository.findById(id).orElseThrow();
+    public CategoryDto findById(Long id, String userId) {
+        var category = repository.findByIdAndUserId(id, userId).orElseThrow();
         return mapper.categoryToDto(category);
     }
 
@@ -45,8 +45,8 @@ public class CategoryService {
         repository.save(category);
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(Long id, String userId) {
+        repository.deleteByIdAndUserId(id, userId);
     }
 
     public List<CategoryDto> findByTitle(String title, String userId) {

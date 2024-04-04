@@ -1,0 +1,6 @@
+ext {
+    versions = [
+            'springCloudVersion'   : '2023.0.0',
+            'testcontainersVersion': '1.19.7'
+    ]
+}

@@ -21,8 +21,8 @@ public class PriorityService {
     private final PriorityRepository repository;
     private final PriorityMapper mapper;
 
-    public PriorityDto findById(Long id) {
-        var priority = repository.findById(id).orElseThrow();
+    public PriorityDto findById(Long id, String userId) {
+        var priority = repository.findByIdAndUserId(id, userId).orElseThrow();
         return mapper.priorityToDto(priority);
     }
 
@@ -42,8 +42,8 @@ public class PriorityService {
         repository.save(priority);
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(Long id, String userId) {
+        repository.deleteByIdAndUserId(id, userId);
     }
 
     public List<PriorityDto> findByTitle(String title, String userId) {

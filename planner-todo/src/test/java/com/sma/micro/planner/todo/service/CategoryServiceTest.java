@@ -32,23 +32,23 @@ class CategoryServiceTest {
 
     @Test
     void findById() {
-        when(repository.findById(ID)).thenReturn(Optional.of(CATEGORY));
+        when(repository.findByIdAndUserId(ID, USER_ID)).thenReturn(Optional.of(CATEGORY));
         when(mapper.categoryToDto(CATEGORY)).thenReturn(CATEGORY_DTO);
 
-        var result = service.findById(ID);
+        var result = service.findById(ID, USER_ID);
 
-        verify(repository).findById(ID);
+        verify(repository).findByIdAndUserId(ID, USER_ID);
         verify(mapper).categoryToDto(CATEGORY);
         assertThat(result).isEqualTo(CATEGORY_DTO);
     }
 
     @Test
     void findById_exception() {
-        when(repository.findById(ID)).thenReturn(Optional.empty());
+        when(repository.findByIdAndUserId(ID, USER_ID)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> service.findById(ID));
+        assertThrows(NoSuchElementException.class, () -> service.findById(ID, USER_ID));
 
-        verify(repository).findById(ID);
+        verify(repository).findByIdAndUserId(ID, USER_ID);
     }
 
     @Test
@@ -91,9 +91,9 @@ class CategoryServiceTest {
     @Test
     void deleteById() {
 
-        service.deleteById(ID);
+        service.deleteById(ID, USER_ID);
 
-        verify(repository).deleteById(ID);
+        verify(repository).deleteByIdAndUserId(ID, USER_ID);
     }
 
     @Test

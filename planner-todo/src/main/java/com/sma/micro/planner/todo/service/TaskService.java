@@ -24,8 +24,8 @@ public class TaskService {
     private final TaskRepository repository;
     private final TaskMapper mapper;
 
-    public TaskDto findById(Long id) {
-        var task = repository.findById(id).orElseThrow();
+    public TaskDto findById(Long id, String userId) {
+        var task = repository.findByIdAndUserId(id, userId).orElseThrow();
         return mapper.taskToDto(task);
     }
 
@@ -45,8 +45,8 @@ public class TaskService {
         repository.save(task);
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(Long id, String userId) {
+        repository.deleteByIdAndUserId(id, userId);
     }
 
     public Page<TaskDto> findByParams(String title,
