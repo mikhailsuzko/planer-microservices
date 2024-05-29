@@ -1,6 +1,5 @@
 package com.sma.micro.planner.todo.integration.service;
 
-import com.sma.micro.planner.plannerentity.entity.Category;
 import com.sma.micro.planner.todo.dto.CategoryDto;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
 import com.sma.micro.planner.todo.service.CategoryService;
@@ -82,11 +81,11 @@ class CategoryServiceIT extends IntegrationTestBase {
     @Test
     void addAll() {
         var userId = UUID.randomUUID().toString();
-        var cat1 = Category.builder().title("title1").userId(userId).build();
-        var cat2 = Category.builder().title("title2").userId(userId).build();
-        var cat3 = Category.builder().title("title3").userId(userId).build();
+        var cat1 = new CategoryDto("title1");
+        var cat2 = new CategoryDto("title2");
+        var cat3 = new CategoryDto("title3");
 
-        service.addAll(List.of(cat1, cat2, cat3));
+        service.addAll(List.of(cat1, cat2, cat3), userId);
 
         var result = service.findAll(userId);
         assertThat(result).hasSize(3)

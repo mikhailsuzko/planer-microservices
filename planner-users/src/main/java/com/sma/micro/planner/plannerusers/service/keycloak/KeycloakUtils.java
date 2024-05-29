@@ -31,7 +31,7 @@ public class KeycloakUtils {
         return userRepresentation;
     }
 
-    public CredentialRepresentation createPasswordCredentials(String password) {
+    private CredentialRepresentation createPasswordCredentials(String password) {
         var passwordCredential = new CredentialRepresentation();
         passwordCredential.setTemporary(false);
         passwordCredential.setType(CredentialRepresentation.PASSWORD);

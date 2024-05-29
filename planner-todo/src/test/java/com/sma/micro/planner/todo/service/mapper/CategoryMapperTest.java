@@ -1,5 +1,7 @@
 package com.sma.micro.planner.todo.service.mapper;
 
+import com.sma.micro.planner.todo.db.mapper.CategoryMapper;
+import com.sma.micro.planner.todo.db.mapper.CategoryMapperImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,15 +15,15 @@ class CategoryMapperTest {
     private CategoryMapper mapper;
 
     @Test
-    void dtoToCategory() {
-        var result = mapper.dtoToCategory(CATEGORY_DTO, USER_ID);
+    void toEntity() {
+        var result = mapper.toEntity(CATEGORY_DTO, USER_ID);
 
         assertThat(result).isEqualTo(CATEGORY);
     }
 
     @Test
-    void categoryToDto() {
-        var result = mapper.categoryToDto(CATEGORY);
+    void toDomain() {
+        var result = mapper.toDomain(CATEGORY);
 
         assertThat(result).isEqualTo(CATEGORY_DTO);
     }
