@@ -2,10 +2,10 @@ package com.sma.micro.planner.todo.integration.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sma.micro.planner.todo.db.jpa.CategoryJpaRepository;
 import com.sma.micro.planner.todo.dto.CategoryDto;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
 import com.sma.micro.planner.todo.model.search.SearchValues;
-import com.sma.micro.planner.todo.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ class CategoryControllerIT extends IntegrationTestBase {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private CategoryRepository repository;
+    private CategoryJpaRepository repository;
 
 
     @BeforeEach

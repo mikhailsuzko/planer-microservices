@@ -1,9 +1,10 @@
 package com.sma.micro.planner.todo.service;
 
-import com.sma.micro.planner.plannerentity.entity.Category;
 import com.sma.micro.planner.plannerentity.entity.Priority;
 import com.sma.micro.planner.plannerentity.entity.Stat;
 import com.sma.micro.planner.plannerentity.entity.Task;
+import com.sma.micro.planner.todo.db.jpa.CategoryJpaRepository;
+import com.sma.micro.planner.todo.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class InitDataService {
     private final TaskService taskService;
     private final PriorityService priorityService;
     private final CategoryService categoryService;
+    private final CategoryJpaRepository categoryJpaRepository;
     private final StatService statService;
 
     public boolean init(String userId) {
@@ -32,14 +34,17 @@ public class InitDataService {
             var priorityMed = Priority.builder().title("Medium").color("#CFF4CF").userId(userId).build();
             priorityService.addAll(List.of(priorityHigh, priorityMed, priorityLow));
 
-            var categoryWork = Category.builder().title("Work").userId(userId).build();
-            var categoryHome = Category.builder().title("Home").userId(userId).build();
-            var categorySport = Category.builder().title("Sport").userId(userId).build();
-            var categoryTravelling = Category.builder().title("Travelling").userId(userId).build();
-            categoryService.addAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
+            var categoryWorkDto = new CategoryDto("Work");
+            var categoryHomeDto = new CategoryDto("Home");
+            var categorySportDto = new CategoryDto("Sport");
+            var categoryTravelling = new CategoryDto("Travelling");
+            categoryService.addAll(List.of(categoryWorkDto, categoryHomeDto, categorySportDto, categoryTravelling), userId);
 
             var tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
             var oneWeek = LocalDate.now().plusDays(7).atStartOfDay();
+
+            var categoryWork = categoryJpaRepository.findByTitle("%work%", userId).get(0);
+            var categoryHome = categoryJpaRepository.findByTitle("%home%", userId).get(0);
 
             var task1 = Task.builder()
                     .taskDate(tomorrow)
