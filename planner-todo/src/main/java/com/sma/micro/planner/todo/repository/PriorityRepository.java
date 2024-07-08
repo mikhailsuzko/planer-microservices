@@ -1,6 +1,6 @@
 package com.sma.micro.planner.todo.repository;
 
-import com.sma.micro.planner.plannerentity.entity.Priority;
+import com.sma.micro.planner.todo.domain.entity.Priority;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

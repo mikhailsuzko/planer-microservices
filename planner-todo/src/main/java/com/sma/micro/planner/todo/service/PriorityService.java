@@ -1,8 +1,8 @@
 package com.sma.micro.planner.todo.service;
 
 
-import com.sma.micro.planner.plannerentity.entity.Priority;
 import com.sma.micro.planner.plannerutils.util.Utils;
+import com.sma.micro.planner.todo.domain.entity.Priority;
 import com.sma.micro.planner.todo.dto.PriorityDto;
 import com.sma.micro.planner.todo.repository.PriorityRepository;
 import com.sma.micro.planner.todo.service.mapper.PriorityMapper;

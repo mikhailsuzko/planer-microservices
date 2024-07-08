@@ -1,8 +1,8 @@
 package com.sma.micro.planner.todo.service;
 
 
-import com.sma.micro.planner.plannerentity.entity.Task;
 import com.sma.micro.planner.plannerutils.util.Utils;
+import com.sma.micro.planner.todo.domain.entity.Task;
 import com.sma.micro.planner.todo.dto.TaskDto;
 import com.sma.micro.planner.todo.repository.TaskRepository;
 import com.sma.micro.planner.todo.service.mapper.TaskMapper;
@@ -50,12 +50,12 @@ public class TaskService {
     }
 
     public Page<TaskDto> findByParams(String title,
-                                   Boolean completed,
-                                   Long priorityId,
-                                   Long categoryId,
-                                   LocalDateTime dateFrom,
-                                   LocalDateTime dateTo,
-                                   String userId, Pageable pageable) {
+                                      Boolean completed,
+                                      Long priorityId,
+                                      Long categoryId,
+                                      LocalDateTime dateFrom,
+                                      LocalDateTime dateTo,
+                                      String userId, Pageable pageable) {
         return repository.findByParams(Utils.prepareParam(title), completed, priorityId, categoryId,
                 dateFrom, dateTo, userId, pageable).map(mapper::taskToDto);
     }

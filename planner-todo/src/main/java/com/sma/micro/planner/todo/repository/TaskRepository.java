@@ -1,6 +1,6 @@
 package com.sma.micro.planner.todo.repository;
 
-import com.sma.micro.planner.plannerentity.entity.Task;
+import com.sma.micro.planner.todo.domain.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

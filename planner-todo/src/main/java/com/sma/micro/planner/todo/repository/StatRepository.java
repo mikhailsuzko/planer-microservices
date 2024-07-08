@@ -1,6 +1,6 @@
 package com.sma.micro.planner.todo.repository;
 
-import com.sma.micro.planner.plannerentity.entity.Stat;
+import com.sma.micro.planner.todo.domain.entity.Stat;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

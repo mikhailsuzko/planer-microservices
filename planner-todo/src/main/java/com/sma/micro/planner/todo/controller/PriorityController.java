@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.controller;
 
+import com.sma.micro.planner.todo.application.use_case.category.find_by_title.dto.FindByTitleCategoriesRq;
 import com.sma.micro.planner.todo.dto.PriorityDto;
-import com.sma.micro.planner.todo.model.search.SearchValues;
 import com.sma.micro.planner.todo.service.PriorityService;
 import com.sma.micro.planner.todo.service.UserDetailsService;
 import com.sma.micro.planner.todo.service.ValidationService;
@@ -56,7 +56,7 @@ public class PriorityController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<PriorityDto>> search(@RequestBody SearchValues params) {
+    public ResponseEntity<List<PriorityDto>> search(@RequestBody FindByTitleCategoriesRq params) {
         var userId = userDetailsService.getUserId();
         validationService.validateUserIdIsNotEmpty(userId);
         var categories = priorityService.findByTitle(params.title(), userId);

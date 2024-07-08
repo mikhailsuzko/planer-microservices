@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.integration.controller;
 
+import com.sma.micro.planner.todo.domain.repository.CategoryRepository;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
-import com.sma.micro.planner.todo.repository.CategoryRepository;
 import com.sma.micro.planner.todo.repository.PriorityRepository;
 import com.sma.micro.planner.todo.repository.StatRepository;
 import com.sma.micro.planner.todo.repository.TaskRepository;
@@ -74,7 +74,7 @@ class InitControllerIT extends IntegrationTestBase {
                 .andExpectAll(status().isOk(), content().string("true"));
 
         assertThat(statRepository.findByUserId(NEW_USER)).isPresent();
-        assertThat(categoryRepository.findByUserIdOrderByTitle(NEW_USER)).hasSize(4);
+        assertThat(categoryRepository.findAll(NEW_USER)).hasSize(4);
         assertThat(priorityRepository.findByUserIdOrderByIdAsc(NEW_USER)).hasSize(3);
         assertThat(taskRepository.findByUserIdOrderByTaskDateDescTitleAsc(NEW_USER)).hasSize(2);
     }

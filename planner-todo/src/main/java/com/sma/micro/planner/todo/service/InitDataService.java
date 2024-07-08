@@ -1,9 +1,10 @@
 package com.sma.micro.planner.todo.service;
 
-import com.sma.micro.planner.plannerentity.entity.Category;
-import com.sma.micro.planner.plannerentity.entity.Priority;
-import com.sma.micro.planner.plannerentity.entity.Stat;
-import com.sma.micro.planner.plannerentity.entity.Task;
+import com.sma.micro.planner.todo.domain.entity.Category;
+import com.sma.micro.planner.todo.domain.entity.Priority;
+import com.sma.micro.planner.todo.domain.entity.Stat;
+import com.sma.micro.planner.todo.domain.entity.Task;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import java.util.NoSuchElementException;
 public class InitDataService {
     private final TaskService taskService;
     private final PriorityService priorityService;
-    private final CategoryService categoryService;
     private final StatService statService;
+    private final JpaCategoryRepository repository;
 
     public boolean init(String userId) {
         try {
@@ -36,7 +37,7 @@ public class InitDataService {
             var categoryHome = Category.builder().title("Home").userId(userId).build();
             var categorySport = Category.builder().title("Sport").userId(userId).build();
             var categoryTravelling = Category.builder().title("Travelling").userId(userId).build();
-            categoryService.addAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
+            repository.saveAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
 
             var tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
             var oneWeek = LocalDate.now().plusDays(7).atStartOfDay();

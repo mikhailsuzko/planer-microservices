@@ -1,6 +1,6 @@
 package com.sma.micro.planner.todo.service.mapper;
 
-import com.sma.micro.planner.plannerentity.entity.Stat;
+import com.sma.micro.planner.todo.domain.entity.Stat;
 import com.sma.micro.planner.todo.dto.StatDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ class StatMapperTest {
 
     @Test
     void statToDto() {
-        var result = mapper.statToDto(new Stat(ID, COUNT, COUNT, USER_ID));
+        var result = mapper.statToDto(new Stat(ID_10, COUNT, COUNT, USER_ID));
 
-        assertThat(result).isEqualTo(new StatDto(ID, COUNT, COUNT));
+        assertThat(result).isEqualTo(new StatDto(ID_10, COUNT, COUNT));
     }
 }

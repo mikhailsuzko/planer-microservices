@@ -30,23 +30,23 @@ class TaskServiceTest {
 
     @Test
     void findById() {
-        when(repository.findByIdAndUserId(ID, USER_ID)).thenReturn(Optional.of(TASK));
+        when(repository.findByIdAndUserId(ID_10, USER_ID)).thenReturn(Optional.of(TASK));
         when(mapper.taskToDto(TASK)).thenReturn(TASK_DTO);
 
-        var result = service.findById(ID, USER_ID);
+        var result = service.findById(ID_10, USER_ID);
 
-        verify(repository).findByIdAndUserId(ID, USER_ID);
+        verify(repository).findByIdAndUserId(ID_10, USER_ID);
         verify(mapper).taskToDto(TASK);
         assertThat(result).isEqualTo(TASK_DTO);
     }
 
     @Test
     void findById_exception() {
-        when(repository.findByIdAndUserId(ID, USER_ID)).thenReturn(Optional.empty());
+        when(repository.findByIdAndUserId(ID_10, USER_ID)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> service.findById(ID, USER_ID));
+        assertThrows(NoSuchElementException.class, () -> service.findById(ID_10, USER_ID));
 
-        verify(repository).findByIdAndUserId(ID, USER_ID);
+        verify(repository).findByIdAndUserId(ID_10, USER_ID);
     }
 
     @Test
@@ -89,9 +89,9 @@ class TaskServiceTest {
     @Test
     void deleteById() {
 
-        service.deleteById(ID, USER_ID);
+        service.deleteById(ID_10, USER_ID);
 
-        verify(repository).deleteByIdAndUserId(ID, USER_ID);
+        verify(repository).deleteByIdAndUserId(ID_10, USER_ID);
     }
 
     @Test
@@ -103,15 +103,15 @@ class TaskServiceTest {
         var pagesExpected = new PageImpl<>(TASKS_DTO, request, 10);
         when(mapper.taskToDto(TASK)).thenReturn(TASK_DTO);
         when(repository.findByParams(
-                sqlTitle, false, ID, ID, null, null, USER_ID, request))
+                sqlTitle, false, ID_10, ID_10, null, null, USER_ID, request))
                 .thenReturn(pages);
 
-        var result = service.findByParams(TITLE, false, ID, ID,
+        var result = service.findByParams(TITLE, false, ID_10, ID_10,
                 null, null, USER_ID, request);
 
         verify(mapper).taskToDto(TASK);
         verify(repository).findByParams(
-                sqlTitle, false, ID, ID, null, null, USER_ID, request);
+                sqlTitle, false, ID_10, ID_10, null, null, USER_ID, request);
         assertThat(result).isEqualTo(pagesExpected);
     }
 

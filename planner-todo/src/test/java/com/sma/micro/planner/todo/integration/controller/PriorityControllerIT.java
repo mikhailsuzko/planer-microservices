@@ -2,9 +2,9 @@ package com.sma.micro.planner.todo.integration.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sma.micro.planner.todo.application.use_case.category.find_by_title.dto.FindByTitleCategoriesRq;
 import com.sma.micro.planner.todo.dto.PriorityDto;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
-import com.sma.micro.planner.todo.model.search.SearchValues;
 import com.sma.micro.planner.todo.repository.PriorityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -215,7 +215,7 @@ class PriorityControllerIT extends IntegrationTestBase {
     @Test
     @WithMockUser(value = USER_ID, roles = {"user"})
     void search_shouldSucceedWith200() throws Exception {
-        var searchValues = new SearchValues("i");
+        var searchValues = new FindByTitleCategoriesRq("i");
         var result = mvc.perform(post("/priority/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(searchValues)))

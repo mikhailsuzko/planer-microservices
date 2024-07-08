@@ -1,10 +1,11 @@
 package com.sma.micro.planner.todo.service;
 
-import com.sma.micro.planner.plannerentity.entity.Category;
-import com.sma.micro.planner.plannerentity.entity.Priority;
-import com.sma.micro.planner.plannerentity.entity.Stat;
-import com.sma.micro.planner.plannerentity.entity.Task;
+import com.sma.micro.planner.todo.domain.entity.Category;
+import com.sma.micro.planner.todo.domain.entity.Priority;
+import com.sma.micro.planner.todo.domain.entity.Stat;
+import com.sma.micro.planner.todo.domain.entity.Task;
 import com.sma.micro.planner.todo.dto.StatDto;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaCategoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,18 @@ class InitDataServiceTest {
     @MockBean
     private PriorityService priorityService;
     @MockBean
-    private CategoryService categoryService;
+    private JpaCategoryRepository categoryRepository;
     @MockBean
     private StatService statService;
 
     @AfterEach
     void tearDown() {
-        verifyNoMoreInteractions(statService, categoryService, priorityService, taskService);
+        verifyNoMoreInteractions(statService, priorityService, taskService);
     }
 
     @Test
     void init_false() {
-        when(statService.findStat(USER_ID)).thenReturn(new StatDto(ID, COUNT, COUNT));
+        when(statService.findStat(USER_ID)).thenReturn(new StatDto(ID_10, COUNT, COUNT));
 
         assertThat(service.init(USER_ID)).isFalse();
 
@@ -79,7 +80,7 @@ class InitDataServiceTest {
         verify(statService).findStat(USER_ID);
         verify(statService).add(stat);
         verify(priorityService).addAll(List.of(priorityHigh, priorityMed, priorityLow));
-        verify(categoryService).addAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
+        verify(categoryRepository).saveAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
         verify(taskService).addAll(List.of(task1, task2));
     }
 }

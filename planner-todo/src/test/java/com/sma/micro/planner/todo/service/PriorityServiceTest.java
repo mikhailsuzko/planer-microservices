@@ -33,23 +33,23 @@ class PriorityServiceTest {
 
     @Test
     void findById() {
-        when(repository.findByIdAndUserId(ID, USER_ID)).thenReturn(Optional.of(PRIORITY));
+        when(repository.findByIdAndUserId(ID_10, USER_ID)).thenReturn(Optional.of(PRIORITY));
         when(mapper.priorityToDto(PRIORITY)).thenReturn(PRIORITY_DTO);
 
-        var result = service.findById(ID, USER_ID);
+        var result = service.findById(ID_10, USER_ID);
 
-        verify(repository).findByIdAndUserId(ID, USER_ID);
+        verify(repository).findByIdAndUserId(ID_10, USER_ID);
         verify(mapper).priorityToDto(PRIORITY);
         assertThat(result).isEqualTo(PRIORITY_DTO);
     }
 
     @Test
     void findById_exception() {
-        when(repository.findByIdAndUserId(ID, USER_ID)).thenReturn(Optional.empty());
+        when(repository.findByIdAndUserId(ID_10, USER_ID)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> service.findById(ID, USER_ID));
+        assertThrows(NoSuchElementException.class, () -> service.findById(ID_10, USER_ID));
 
-        verify(repository).findByIdAndUserId(ID, USER_ID);
+        verify(repository).findByIdAndUserId(ID_10, USER_ID);
     }
 
     @Test
@@ -92,9 +92,9 @@ class PriorityServiceTest {
     @Test
     void deleteById() {
 
-        service.deleteById(ID, USER_ID);
+        service.deleteById(ID_10, USER_ID);
 
-        verify(repository).deleteByIdAndUserId(ID, USER_ID);
+        verify(repository).deleteByIdAndUserId(ID_10, USER_ID);
     }
 
     @Test
