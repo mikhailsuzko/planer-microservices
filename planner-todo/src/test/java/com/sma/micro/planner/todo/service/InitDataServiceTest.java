@@ -1,11 +1,12 @@
 package com.sma.micro.planner.todo.service;
 
+import com.sma.micro.planner.todo.application.use_case.stat.CreateStatUseCase;
+import com.sma.micro.planner.todo.application.use_case.stat.FindStatUseCase;
 import com.sma.micro.planner.todo.domain.entity.Category;
 import com.sma.micro.planner.todo.domain.entity.Priority;
-import com.sma.micro.planner.todo.domain.entity.Stat;
 import com.sma.micro.planner.todo.domain.entity.Task;
-import com.sma.micro.planner.todo.dto.StatDto;
 import com.sma.micro.planner.todo.infrastructure.repository.JpaCategoryRepository;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaPriorityRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.sma.micro.planner.todo.model.Constants.*;
+import static com.sma.micro.planner.todo.model.Constants.USER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -27,30 +28,29 @@ class InitDataServiceTest {
     @MockBean
     private TaskService taskService;
     @MockBean
-    private PriorityService priorityService;
+    private JpaPriorityRepository jpaPriorityRepository;
     @MockBean
     private JpaCategoryRepository categoryRepository;
     @MockBean
-    private StatService statService;
+    private CreateStatUseCase createStatUseCase;
+    @MockBean
+    private FindStatUseCase findStatUseCase;
 
     @AfterEach
     void tearDown() {
-        verifyNoMoreInteractions(statService, priorityService, taskService);
+        verifyNoMoreInteractions(createStatUseCase, findStatUseCase, jpaPriorityRepository, taskService);
     }
 
     @Test
     void init_false() {
-        when(statService.findStat(USER_ID)).thenReturn(new StatDto(ID_10, COUNT, COUNT));
-
         assertThat(service.init(USER_ID)).isFalse();
 
-        verify(statService).findStat(USER_ID);
+        verify(findStatUseCase).execute(USER_ID);
     }
 
     @Test
     void init_true() {
-        when(statService.findStat(USER_ID)).thenThrow(NoSuchElementException.class);
-        var stat = Stat.builder().userId(USER_ID).build();
+        when(findStatUseCase.execute(USER_ID)).thenThrow(NoSuchElementException.class);
         var priorityHigh = Priority.builder().title("High").color("#FBBABA").userId(USER_ID).build();
         var priorityLow = Priority.builder().title("Low").color("#CCE7FF").userId(USER_ID).build();
         var priorityMed = Priority.builder().title("Medium").color("#CFF4CF").userId(USER_ID).build();
@@ -77,9 +77,9 @@ class InitDataServiceTest {
 
         assertThat(service.init(USER_ID)).isTrue();
 
-        verify(statService).findStat(USER_ID);
-        verify(statService).add(stat);
-        verify(priorityService).addAll(List.of(priorityHigh, priorityMed, priorityLow));
+        verify(createStatUseCase).execute(USER_ID);
+        verify(findStatUseCase).execute(USER_ID);
+        verify(jpaPriorityRepository).saveAll(List.of(priorityHigh, priorityMed, priorityLow));
         verify(categoryRepository).saveAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
         verify(taskService).addAll(List.of(task1, task2));
     }

@@ -1,9 +1,9 @@
 package com.sma.micro.planner.todo.integration.controller;
 
 import com.sma.micro.planner.todo.domain.repository.CategoryRepository;
+import com.sma.micro.planner.todo.domain.repository.PriorityRepository;
+import com.sma.micro.planner.todo.domain.repository.StatRepository;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
-import com.sma.micro.planner.todo.repository.PriorityRepository;
-import com.sma.micro.planner.todo.repository.StatRepository;
 import com.sma.micro.planner.todo.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,9 +73,9 @@ class InitControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpectAll(status().isOk(), content().string("true"));
 
-        assertThat(statRepository.findByUserId(NEW_USER)).isPresent();
+        assertThat(statRepository.find(NEW_USER)).isNotNull();
         assertThat(categoryRepository.findAll(NEW_USER)).hasSize(4);
-        assertThat(priorityRepository.findByUserIdOrderByIdAsc(NEW_USER)).hasSize(3);
+        assertThat(priorityRepository.findAll(NEW_USER)).hasSize(3);
         assertThat(taskRepository.findByUserIdOrderByTaskDateDescTitleAsc(NEW_USER)).hasSize(2);
     }
 }

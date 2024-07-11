@@ -1,7 +1,7 @@
-package com.sma.micro.planner.todo.integration.controller;
+package com.sma.micro.planner.todo.integration.controller.stat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sma.micro.planner.todo.dto.StatDto;
+import com.sma.micro.planner.todo.application.use_case.stat.dto.StatPublicData;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class StatControllerIT extends IntegrationTestBase {
     @Test
     @WithMockUser(value = USER_ID)
     void stat_shouldFailWith403() throws Exception {
-        mvc.perform(get("/category/stat").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/stat").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
 
@@ -55,7 +55,7 @@ class StatControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk()).andReturn();
         var contentAsString = result.getResponse().getContentAsString();
 
-        var stat = objectMapper.readValue(contentAsString, StatDto.class);
-        assertThat(stat).isEqualTo(new StatDto(100L, 2L, 3L));
+        var stat = objectMapper.readValue(contentAsString, StatPublicData.class);
+        assertThat(stat).isEqualTo(new StatPublicData(2L, 3L));
     }
 }

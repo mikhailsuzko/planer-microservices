@@ -1,10 +1,12 @@
 package com.sma.micro.planner.todo.service;
 
+import com.sma.micro.planner.todo.application.use_case.stat.CreateStatUseCase;
+import com.sma.micro.planner.todo.application.use_case.stat.FindStatUseCase;
 import com.sma.micro.planner.todo.domain.entity.Category;
 import com.sma.micro.planner.todo.domain.entity.Priority;
-import com.sma.micro.planner.todo.domain.entity.Stat;
 import com.sma.micro.planner.todo.domain.entity.Task;
 import com.sma.micro.planner.todo.infrastructure.repository.JpaCategoryRepository;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaPriorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +18,28 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class InitDataService {
     private final TaskService taskService;
-    private final PriorityService priorityService;
-    private final StatService statService;
-    private final JpaCategoryRepository repository;
+    private final JpaPriorityRepository priorityRepository;
+    private final CreateStatUseCase createStatUseCase;
+    private final FindStatUseCase findStatUseCase;
+    private final JpaCategoryRepository categoryRepository;
 
     public boolean init(String userId) {
         try {
-            statService.findStat(userId);
+            findStatUseCase.execute(userId);
             return false;
         } catch (NoSuchElementException e) {
-            var statistics = Stat.builder().userId(userId).build();
-            statService.add(statistics);
+            createStatUseCase.execute(userId);
 
             var priorityHigh = Priority.builder().title("High").color("#FBBABA").userId(userId).build();
             var priorityLow = Priority.builder().title("Low").color("#CCE7FF").userId(userId).build();
             var priorityMed = Priority.builder().title("Medium").color("#CFF4CF").userId(userId).build();
-            priorityService.addAll(List.of(priorityHigh, priorityMed, priorityLow));
+            priorityRepository.saveAll(List.of(priorityHigh, priorityMed, priorityLow));
 
             var categoryWork = Category.builder().title("Work").userId(userId).build();
             var categoryHome = Category.builder().title("Home").userId(userId).build();
             var categorySport = Category.builder().title("Sport").userId(userId).build();
             var categoryTravelling = Category.builder().title("Travelling").userId(userId).build();
-            repository.saveAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
+            categoryRepository.saveAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
 
             var tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
             var oneWeek = LocalDate.now().plusDays(7).atStartOfDay();
