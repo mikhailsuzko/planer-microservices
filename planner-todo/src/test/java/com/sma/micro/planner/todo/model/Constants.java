@@ -4,6 +4,8 @@ import com.sma.micro.planner.todo.application.use_case.category.dto.CategoryPubl
 import com.sma.micro.planner.todo.application.use_case.category.dto.CategoryRegistrationData;
 import com.sma.micro.planner.todo.application.use_case.category.dto.CategoryUpdateData;
 import com.sma.micro.planner.todo.application.use_case.priority.dto.PriorityPublicData;
+import com.sma.micro.planner.todo.application.use_case.priority.dto.PriorityRegistrationData;
+import com.sma.micro.planner.todo.application.use_case.priority.dto.PriorityUpdateData;
 import com.sma.micro.planner.todo.domain.entity.Category;
 import com.sma.micro.planner.todo.domain.entity.Priority;
 import com.sma.micro.planner.todo.domain.entity.Task;
@@ -29,7 +31,8 @@ public class Constants {
     public static final Category CATEGORY = new Category("Sport", USER_ID);
     public static final Category CATEGORY_100 = new Category(100L, "Sport", 1L, 1L, USER_ID);
     public static final CategoryDto CATEGORY_DTO = new CategoryDto(ID_10, TITLE, COUNT, COUNT);
-    public static final Priority PRIORITY = new Priority(ID_10, TITLE, COLOR, USER_ID);
+    public static final Priority PRIORITY = new Priority("High", "#FBBABA", USER_ID);
+    public static final Priority PRIORITY_100 = new Priority(100L, "High", "#FBBABA", USER_ID);
     public static final PriorityDto PRIORITY_DTO = new PriorityDto(ID_10, TITLE, COLOR);
     public static final Task TASK = new Task(ID_10, TITLE, false, null, CATEGORY, PRIORITY, USER_ID);
     public static final TaskDto TASK_DTO = new TaskDto(ID_10, TITLE, false, null, CATEGORY_DTO, PRIORITY_DTO);
@@ -51,6 +54,11 @@ public class Constants {
     public static final PriorityDto PRIORITY_DTO_100 = new PriorityDto(100L, "High", "#FBBABA");
     public static final PriorityDto PRIORITY_DTO_101 = new PriorityDto(101L, "Medium", "#CFF4CF");
     public static final PriorityDto PRIORITY_DTO_102 = new PriorityDto(102L, "Low", "#CCE7FF");
+    public static final PriorityRegistrationData PRIORITY_REGISTRATION_DATA = new PriorityRegistrationData("High", "#FBBABA");
+    public static final PriorityUpdateData PRIORITY_UPDATE_DATA_100 = new PriorityUpdateData(100L, "High", "#FBBABA");
+    public static final PriorityPublicData PRIORITY_PUBLIC_DATA_100 = new PriorityPublicData(100L, "High", "#FBBABA");
+    public static final PriorityPublicData PRIORITY_PUBLIC_DATA_101 = new PriorityPublicData(101L, "Medium", "#CFF4CF");
+    public static final PriorityPublicData PRIORITY_PUBLIC_DATA_102 = new PriorityPublicData(102L, "Low", "#CCE7FF");
 
     public static final TaskDto TASK_DTO_100 = new TaskDto(100L, "Read book", false, null, CATEGORY_DTO_100, PRIORITY_DTO_100);
     public static final TaskDto TASK_DTO_101 = new TaskDto(101L, "Walk", false, null, CATEGORY_DTO_102, PRIORITY_DTO_101);

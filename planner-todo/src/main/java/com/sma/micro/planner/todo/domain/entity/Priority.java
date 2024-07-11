@@ -33,6 +33,13 @@ public class Priority {
     @JsonIgnore
     private String userId;
 
+    public Priority(String title, String color, String userId) {
+        this.title = title;
+        this.color = color;
+        this.userId = userId;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
