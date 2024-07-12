@@ -7,6 +7,7 @@ import com.sma.micro.planner.todo.domain.entity.Priority;
 import com.sma.micro.planner.todo.domain.entity.Task;
 import com.sma.micro.planner.todo.infrastructure.repository.JpaCategoryRepository;
 import com.sma.micro.planner.todo.infrastructure.repository.JpaPriorityRepository;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaTaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,11 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class InitDataService {
-    private final TaskService taskService;
+    private final JpaTaskRepository taskRepository;
     private final JpaPriorityRepository priorityRepository;
+    private final JpaCategoryRepository categoryRepository;
     private final CreateStatUseCase createStatUseCase;
     private final FindStatUseCase findStatUseCase;
-    private final JpaCategoryRepository categoryRepository;
 
     public boolean init(String userId) {
         try {
@@ -58,7 +59,7 @@ public class InitDataService {
                     .title("Reading")
                     .userId(userId)
                     .build();
-            taskService.addAll(List.of(task1, task2));
+            taskRepository.saveAll(List.of(task1, task2));
             return true;
         }
     }

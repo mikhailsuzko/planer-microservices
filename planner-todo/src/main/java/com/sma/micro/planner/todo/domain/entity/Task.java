@@ -14,6 +14,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "task")
 public class Task {
@@ -44,6 +45,15 @@ public class Task {
     @Column(name = "user_id", nullable = false)
     @JsonIgnore
     private String userId;
+
+    public Task(String title, Boolean completed, LocalDateTime taskDate, Category category, Priority priority, String userId) {
+        this.title = title;
+        this.completed = completed;
+        this.taskDate = taskDate;
+        this.category = category;
+        this.priority = priority;
+        this.userId = userId;
+    }
 
     @Override
     public boolean equals(Object o) {

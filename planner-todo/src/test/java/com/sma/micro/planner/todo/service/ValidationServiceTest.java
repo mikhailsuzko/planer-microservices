@@ -1,6 +1,7 @@
 package com.sma.micro.planner.todo.service;
 
-import com.sma.micro.planner.todo.exception.ValidationException;
+import com.sma.micro.planner.todo.infrastructure.exception.ValidationException;
+import com.sma.micro.planner.todo.infrastructure.service.ValidationService;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

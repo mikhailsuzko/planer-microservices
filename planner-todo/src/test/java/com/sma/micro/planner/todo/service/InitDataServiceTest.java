@@ -7,6 +7,7 @@ import com.sma.micro.planner.todo.domain.entity.Priority;
 import com.sma.micro.planner.todo.domain.entity.Task;
 import com.sma.micro.planner.todo.infrastructure.repository.JpaCategoryRepository;
 import com.sma.micro.planner.todo.infrastructure.repository.JpaPriorityRepository;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaTaskRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ class InitDataServiceTest {
     @Autowired
     private InitDataService service;
     @MockBean
-    private TaskService taskService;
+    private JpaTaskRepository jpaTaskRepository;
     @MockBean
     private JpaPriorityRepository jpaPriorityRepository;
     @MockBean
@@ -38,7 +39,7 @@ class InitDataServiceTest {
 
     @AfterEach
     void tearDown() {
-        verifyNoMoreInteractions(createStatUseCase, findStatUseCase, jpaPriorityRepository, taskService);
+        verifyNoMoreInteractions(createStatUseCase, findStatUseCase, jpaPriorityRepository, jpaTaskRepository);
     }
 
     @Test
@@ -81,6 +82,6 @@ class InitDataServiceTest {
         verify(findStatUseCase).execute(USER_ID);
         verify(jpaPriorityRepository).saveAll(List.of(priorityHigh, priorityMed, priorityLow));
         verify(categoryRepository).saveAll(List.of(categoryWork, categoryHome, categorySport, categoryTravelling));
-        verify(taskService).addAll(List.of(task1, task2));
+        verify(jpaTaskRepository).saveAll(List.of(task1, task2));
     }
 }

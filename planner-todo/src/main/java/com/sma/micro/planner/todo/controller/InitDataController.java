@@ -1,8 +1,8 @@
 package com.sma.micro.planner.todo.controller;
 
+import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.ValidationService;
 import com.sma.micro.planner.todo.service.InitDataService;
-import com.sma.micro.planner.todo.service.UserDetailsService;
-import com.sma.micro.planner.todo.service.ValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

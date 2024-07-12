@@ -1,7 +1,8 @@
 package com.sma.micro.planner.todo.handler;
 
-import com.sma.micro.planner.todo.exception.AuthenticationException;
-import com.sma.micro.planner.todo.exception.ValidationException;
+import com.sma.micro.planner.todo.infrastructure.exception.AuthenticationException;
+import com.sma.micro.planner.todo.infrastructure.exception.ValidationException;
+import com.sma.micro.planner.todo.infrastructure.handler.RestExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -21,6 +21,8 @@ public class CategoryMapper {
         return new Category(
                 data.id(),
                 data.title(),
+                data.completedCount(),
+                data.uncompletedCount(),
                 userId);
     }
 

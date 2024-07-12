@@ -3,8 +3,8 @@ package com.sma.micro.planner.todo.integration.controller;
 import com.sma.micro.planner.todo.domain.repository.CategoryRepository;
 import com.sma.micro.planner.todo.domain.repository.PriorityRepository;
 import com.sma.micro.planner.todo.domain.repository.StatRepository;
+import com.sma.micro.planner.todo.infrastructure.repository.JpaTaskRepository;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
-import com.sma.micro.planner.todo.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ class InitControllerIT extends IntegrationTestBase {
     @Autowired
     private PriorityRepository priorityRepository;
     @Autowired
-    private TaskRepository taskRepository;
+    private JpaTaskRepository taskRepository;
     @Autowired
     private StatRepository statRepository;
 
@@ -76,6 +76,6 @@ class InitControllerIT extends IntegrationTestBase {
         assertThat(statRepository.find(NEW_USER)).isNotNull();
         assertThat(categoryRepository.findAll(NEW_USER)).hasSize(4);
         assertThat(priorityRepository.findAll(NEW_USER)).hasSize(3);
-        assertThat(taskRepository.findByUserIdOrderByTaskDateDescTitleAsc(NEW_USER)).hasSize(2);
+        assertThat(taskRepository.findAll(NEW_USER)).hasSize(2);
     }
 }

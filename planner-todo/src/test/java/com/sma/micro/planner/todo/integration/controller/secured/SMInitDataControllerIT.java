@@ -1,7 +1,7 @@
 package com.sma.micro.planner.todo.integration.controller.secured;
 
 import com.sma.micro.planner.todo.controller.InitDataController;
-import com.sma.micro.planner.todo.exception.AuthenticationException;
+import com.sma.micro.planner.todo.infrastructure.exception.AuthenticationException;
 import com.sma.micro.planner.todo.integration.IntegrationTestBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

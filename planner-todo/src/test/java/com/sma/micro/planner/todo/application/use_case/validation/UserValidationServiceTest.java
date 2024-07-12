@@ -1,6 +1,6 @@
 package com.sma.micro.planner.todo.application.use_case.validation;
 
-import com.sma.micro.planner.todo.exception.ValidationException;
+import com.sma.micro.planner.todo.infrastructure.exception.ValidationException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
