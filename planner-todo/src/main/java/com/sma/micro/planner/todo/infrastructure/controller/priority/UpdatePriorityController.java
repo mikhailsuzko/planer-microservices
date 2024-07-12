@@ -2,9 +2,9 @@ package com.sma.micro.planner.todo.infrastructure.controller.priority;
 
 import com.sma.micro.planner.todo.application.use_case.priority.UpdatePriorityUseCase;
 import com.sma.micro.planner.todo.application.use_case.priority.dto.PriorityUpdateData;
-import com.sma.micro.planner.todo.application.use_case.validation.UserValidationService;
 import com.sma.micro.planner.todo.infrastructure.controller.CommonController;
 import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.UserValidationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

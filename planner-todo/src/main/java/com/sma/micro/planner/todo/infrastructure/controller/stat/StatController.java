@@ -2,9 +2,9 @@ package com.sma.micro.planner.todo.infrastructure.controller.stat;
 
 import com.sma.micro.planner.todo.application.use_case.stat.FindStatUseCase;
 import com.sma.micro.planner.todo.application.use_case.stat.dto.StatPublicData;
-import com.sma.micro.planner.todo.application.use_case.validation.UserValidationService;
 import com.sma.micro.planner.todo.infrastructure.controller.CommonController;
 import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.UserValidationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

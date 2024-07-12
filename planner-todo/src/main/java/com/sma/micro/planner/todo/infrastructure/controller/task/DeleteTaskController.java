@@ -1,9 +1,9 @@
 package com.sma.micro.planner.todo.infrastructure.controller.task;
 
 import com.sma.micro.planner.todo.application.use_case.task.DeleteTaskUseCase;
-import com.sma.micro.planner.todo.application.use_case.validation.UserValidationService;
 import com.sma.micro.planner.todo.infrastructure.controller.CommonController;
 import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.UserValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

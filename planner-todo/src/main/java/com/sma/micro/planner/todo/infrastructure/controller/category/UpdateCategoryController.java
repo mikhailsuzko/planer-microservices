@@ -2,9 +2,9 @@ package com.sma.micro.planner.todo.infrastructure.controller.category;
 
 import com.sma.micro.planner.todo.application.use_case.category.UpdateCategoryUseCase;
 import com.sma.micro.planner.todo.application.use_case.category.dto.CategoryUpdateData;
-import com.sma.micro.planner.todo.application.use_case.validation.UserValidationService;
 import com.sma.micro.planner.todo.infrastructure.controller.CommonController;
 import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.UserValidationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,9 +2,9 @@ package com.sma.micro.planner.todo.infrastructure.controller.category;
 
 import com.sma.micro.planner.todo.application.use_case.category.FindByTitleCategoriesUseCase;
 import com.sma.micro.planner.todo.application.use_case.category.dto.CategoryPublicData;
-import com.sma.micro.planner.todo.application.use_case.validation.UserValidationService;
 import com.sma.micro.planner.todo.infrastructure.controller.CommonController;
 import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.UserValidationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

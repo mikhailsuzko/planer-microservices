@@ -2,9 +2,9 @@ package com.sma.micro.planner.todo.infrastructure.controller.priority;
 
 import com.sma.micro.planner.todo.application.use_case.priority.FindByIdPriorityUseCase;
 import com.sma.micro.planner.todo.application.use_case.priority.dto.PriorityPublicData;
-import com.sma.micro.planner.todo.application.use_case.validation.UserValidationService;
 import com.sma.micro.planner.todo.infrastructure.controller.CommonController;
 import com.sma.micro.planner.todo.infrastructure.service.UserDetailsService;
+import com.sma.micro.planner.todo.infrastructure.service.UserValidationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

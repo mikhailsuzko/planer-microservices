@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.sma.micro.planner.todo.model.Constants.*;
+import static com.sma.micro.planner.todo.common.model.Constants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = {TaskMapper.class, PriorityMapper.class, CategoryMapper.class})

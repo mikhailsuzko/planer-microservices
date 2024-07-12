@@ -1,6 +1,5 @@
 package com.sma.micro.planner.todo.infrastructure.handler;
 
-import com.sma.micro.planner.todo.infrastructure.dto.ErrorData;
 import com.sma.micro.planner.todo.infrastructure.exception.AuthenticationException;
 import com.sma.micro.planner.todo.infrastructure.exception.ValidationException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,9 +69,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> buildResponseEntity(HttpStatus status, String errorDesc,
                                                        String requestURL) {
-        var errorData = new ErrorData(String.valueOf(status.value()), status.name(), errorDesc);
         var url = requestURL.replaceAll("[\n\r\t]", "_");
-        log.error("Error when calling \"{}\": {}", url, errorData);
+        log.error("Error when calling \"{}\": status={}, errorDesc={}",
+                url, status, errorDesc);
         return new ResponseEntity<>(errorDesc, status);
     }
 }

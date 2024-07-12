@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static com.sma.micro.planner.todo.model.Constants.ID_10;
-import static com.sma.micro.planner.todo.model.Constants.USER_ID;
+import static com.sma.micro.planner.todo.common.model.Constants.ID_10;
+import static com.sma.micro.planner.todo.common.model.Constants.USER_ID;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
