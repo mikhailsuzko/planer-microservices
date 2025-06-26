@@ -14,7 +14,7 @@ Google account.
    backend.
 3. [Backend](https://github.com/mikhailsuzko/planer-microservices): Built on microservice architecture using Spring
    Cloud, Spring Cloud Config, API Gateway, Eureka Client and Server, Spring Security, Spring JPA, Hibernate. The
-   project implements a REST Api for processing requests from the client
+   project implements a REST API for processing requests from the client
 4. [Properties](https://github.com/mikhailsuzko/Planner-properties): Since the backend application uses Spring Cloud
    Config, all settings are stored in
    a separate repository that can be changed without the need to rebuild the backend application
