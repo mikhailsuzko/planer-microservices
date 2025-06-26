@@ -13,7 +13,7 @@ Google account.
    keycloack and passes them to the frontend. It also redirects all requests from the frontend application to the
    backend.
 3. [Backend](https://github.com/mikhailsuzko/planer-microservices): Built on microservice architecture using Spring
-   Cloud, Spring Cloud Config, Api Gateway, Eureka Client and Server, Spring Security, Spring Jpa, Hibernate. The
+   Cloud, Spring Cloud Config, API Gateway, Eureka Client and Server, Spring Security, Spring JPA, Hibernate. The
    project implements a REST Api for processing requests from the client
 4. [Properties](https://github.com/mikhailsuzko/Planner-properties): Since the backend application uses Spring Cloud
    Config, all settings are stored in
